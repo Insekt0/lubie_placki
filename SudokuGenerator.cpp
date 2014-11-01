@@ -3,8 +3,7 @@
 #include "SudokuSolver.h"
 #include <algorithm>
 #include <fstream>
-#include <ctime>
-#include <cstdlib>
+
 
 
 void SudokuGenerator::generate(int* sudokuArray, int numberOfCellsToFill) {
@@ -16,7 +15,6 @@ void SudokuGenerator::generate(int* sudokuArray, int numberOfCellsToFill) {
     unsigned attempt = 0;
     while(!result)
     {
-        std::srand ( unsigned ( std::time(0) ) );
         for (int i = 0; i < 81; ++i)
             sudokuArray[i] = 0;
 

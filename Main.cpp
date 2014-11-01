@@ -3,13 +3,14 @@
 #include "Common.h"
 #include "SudokuGenerator.h"
 #include "SudokuSolver.h"
-
+#include <ctime>
+#include <cstdlib>
 
 int main()
 {
 	cout << "Nasz super sudoku solver" << endl;
     cout << "Podaj poczatkowa liczbe pol sudoku" << endl;
-    
+    std::srand ( unsigned ( std::time(0) ) );
     int filledCellsNumber;
     cin >> filledCellsNumber;
     ostringstream ss;
