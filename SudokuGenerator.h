@@ -8,6 +8,7 @@ public:
     void generate(int* sudokuArray, COMPLEXITY_LEVELS complexity_level);
     void readFromFile(int* sudokuArray, string filename);
     void saveToFile(int* sudokuArray);
+    void printSudoku(int* sudokuArray, string name);
 };
 
 

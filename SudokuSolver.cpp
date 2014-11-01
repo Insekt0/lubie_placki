@@ -59,9 +59,8 @@ void SudokuSolver::countElements() {
    
 }
 
-void SudokuSolver::findAndSortEmptyCellsByNeighboursNumber() {
-
-    int maxNeighboursNumber;
+void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
+    int value;
     int position;
 
     for (int y = 1; y <= 9; ++y)
@@ -69,16 +68,39 @@ void SudokuSolver::findAndSortEmptyCellsByNeighboursNumber() {
         {
             if (accessSudokuArray(y, x))
                 continue;
-            maxNeighboursNumber = m_rowsElementsArray[y-1] < m_columnsElementsArray[x-1] ? m_columnsElementsArray[x-1] : m_rowsElementsArray[y-1];
-            maxNeighboursNumber = maxNeighboursNumber < accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) ? accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) : maxNeighboursNumber;
-            position = x-1 + (y-1)*9;
-            m_cells.push_back(make_pair(position, maxNeighboursNumber));
+
+            switch(SCENARIO)
+            {
+                case MOST_NEIGHBOURS:
+                    value = m_rowsElementsArray[y-1] < m_columnsElementsArray[x-1] ? m_columnsElementsArray[x-1] : m_rowsElementsArray[y-1];
+                    value = value < accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) ? accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) : value;
+                    break;
+                case RANDOM:
+                    value = 0;
+                    break;
+                default:
+                    assert(false);
+                    break;
+            }
+                position = x-1 + (y-1)*9;
+            m_cells.push_back(make_pair(position, value));
         }
 
-    sort(m_cells.begin(), m_cells.end(), sort_function);
+    switch(SCENARIO)
+    {
+        case MOST_NEIGHBOURS:
+            sort(m_cells.begin(), m_cells.end(), sort_function);
+            break;
+        case RANDOM:
+            random_shuffle(m_cells.begin(), m_cells.end());
+            break;
+        default:
+            assert(false);
+            break;
+    }
+
     for(unsigned i = 0; i < m_cells.size(); ++i)
         LOG("%d: position:%d, value:%d\n", i, m_cells[i].first, m_cells[i].second); 
-
 }
 
 vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX) {
@@ -149,16 +171,18 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX) {
 
 int SudokuSolver::recursiveSearchInTree(int position) {
 
+    ++m_solveComplexity;
+
     int itsY;
     int itsX;
 
     convert1Dto2D(position, itsY, itsX);
-    LOG("itsY: %d, itsX: %d\n", itsY, itsX);
+    // LOG("itsY: %d, itsX: %d\n", itsY, itsX);
     vector<int> possibleValues = checkPossibleValues(itsY, itsX);
-    LOG("possible values: ");
-    for (unsigned i = 0; i < possibleValues.size(); ++i)
-        LOG("%d ", possibleValues[i]);
-    LOG("\n");
+    // LOG("possible values: ");
+    //for (unsigned i = 0; i < possibleValues.size(); ++i)
+     //   LOG("%d ", possibleValues[i]);
+    // LOG("\n");
 
     if(possibleValues.empty())
         return -1; // dead end, solution is somewhere else
@@ -173,8 +197,8 @@ int SudokuSolver::recursiveSearchInTree(int position) {
             vectorIndex = i;
             break;
         }
-    LOG("nextCellPosition: %d\n", nextCellPosition);
-    LOG("vectorIndex: %d\n", vectorIndex);
+    // LOG("nextCellPosition: %d\n", nextCellPosition);
+    // LOG("vectorIndex: %d\n", vectorIndex);
     if (nextCellPosition == -1)
     {
         accessTemporaryArray(itsY, itsX) = possibleValues[0];
@@ -186,7 +210,7 @@ int SudokuSolver::recursiveSearchInTree(int position) {
 
     for (unsigned i = 0; i < possibleValues.size(); ++i)
     {
-        LOG("possibleValue: %d\n", possibleValues[i]);
+        // LOG("possibleValue: %d\n", possibleValues[i]);
         accessTemporaryArray(itsY, itsX) = possibleValues[i];
         result = recursiveSearchInTree(nextCellPosition);
         if(!result)
@@ -199,19 +223,27 @@ int SudokuSolver::recursiveSearchInTree(int position) {
     return -1; // dead end, solution is somewhere else
 }
 
-int* SudokuSolver::solve() {
+int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
+    auto startTime = std::chrono::steady_clock::now();
+    m_solveComplexity = 0;
     countElements();
-    findAndSortEmptyCellsByNeighboursNumber();
+    findAndSortEmptyCells(SCENARIO);
     
     int position = m_cells[0].first;
     m_cells[0].first = -1;
-
-
+    
     int result = recursiveSearchInTree(position);
+
+    auto endTime = std::chrono::steady_clock::now();
+
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+
+    m_solveTime = elapsedTime.count();
 
     if(result)
     {
         LOG("Something went wrong! Sudoku must have solution, but it hasn't been found!\n");
+        assert(!result);
         return 0;
     }
 

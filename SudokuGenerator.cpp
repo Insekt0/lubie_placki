@@ -25,3 +25,25 @@ void SudokuGenerator::saveToFile(int* sudokuArray) {
     }
     myfile.close();
 }
+
+void SudokuGenerator::printSudoku(int* sudokuArray, string name) {
+    
+    cout << "\n    Sudoku: " << name;
+    for (int i = 0; i < 81; ++i)
+    {
+        if(i%9 == 0)
+            cout << endl;
+        if(i%27 == 0)
+            cout << " -----------------------" << endl;
+        
+        if(i%3 == 0)
+            cout << "| ";
+        cout << sudokuArray[i] << " ";
+
+        if(i%9 == 8)
+            cout << "|";
+        if(i == 80)
+            cout << "\n -----------------------" << endl;
+    }
+
+}
