@@ -1,7 +1,8 @@
 #ifndef Common_h
 #define Common_h
 
-#define DEBUG_MODE 1
+#include <string>
+#define DEBUG_MODE 0
 
 using namespace std;
 

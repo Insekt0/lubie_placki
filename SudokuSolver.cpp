@@ -37,7 +37,7 @@ void SudokuSolver::countElements() {
             ++m_columnsElementsArray[x-1];
             ++accessSmallSquareArray((y + 2) / 3, (x + 2) / 3);
         }
-    /*
+    
     LOG("Row elements array\n");
     for(int i = 0; i < 9; ++i)
     {
@@ -56,7 +56,7 @@ void SudokuSolver::countElements() {
         LOG("%d ", m_smallSquareArray[i]);
     }
     LOG("\n");
-    */
+   
 }
 
 void SudokuSolver::findAndSortEmptyCellsByNeighboursNumber() {
@@ -76,8 +76,8 @@ void SudokuSolver::findAndSortEmptyCellsByNeighboursNumber() {
         }
 
     sort(m_cells.begin(), m_cells.end(), sort_function);
-    //for(int i = 0; i < m_cells.size(); ++i)
-    //    LOG("%d: position:%d, value:%d\n", i, m_cells[i].first, m_cells[i].second); 
+    for(unsigned i = 0; i < m_cells.size(); ++i)
+        LOG("%d: position:%d, value:%d\n", i, m_cells[i].first, m_cells[i].second); 
 
 }
 
@@ -167,7 +167,7 @@ int SudokuSolver::recursiveSearchInTree(int position) {
     unsigned vectorIndex = -1;
 
     for (unsigned i = 0; i < m_cells.size(); ++i)
-        if(m_cells[i].first)
+        if(m_cells[i].first != -1)
         {
             nextCellPosition = m_cells[i].first;
             vectorIndex = i;
@@ -181,7 +181,7 @@ int SudokuSolver::recursiveSearchInTree(int position) {
         return 0; // Solution found
     }
 
-    m_cells[vectorIndex].first = 0;
+    m_cells[vectorIndex].first = -1;
     int result;
 
     for (unsigned i = 0; i < possibleValues.size(); ++i)
@@ -204,7 +204,8 @@ int* SudokuSolver::solve() {
     findAndSortEmptyCellsByNeighboursNumber();
     
     int position = m_cells[0].first;
-    m_cells[0].first = 0;
+    m_cells[0].first = -1;
+
 
     int result = recursiveSearchInTree(position);
 

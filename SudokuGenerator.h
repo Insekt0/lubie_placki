@@ -6,7 +6,7 @@
 class SudokuGenerator {
 public:
     void generate(int* sudokuArray, COMPLEXITY_LEVELS complexity_level);
-    void readFromFile(int* sudokuArray);
+    void readFromFile(int* sudokuArray, string filename);
     void saveToFile(int* sudokuArray);
 };
 

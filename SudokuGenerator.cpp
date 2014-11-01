@@ -5,9 +5,9 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS complexity_le
     // TODO
 }
 
-void SudokuGenerator::readFromFile(int* sudokuArray) {
+void SudokuGenerator::readFromFile(int* sudokuArray, string filename) {
     ifstream myfile;
-    myfile.open("sudoku.txt");
+    myfile.open(filename);
     int value;
     int counter = 0;
     while(myfile >> value)
