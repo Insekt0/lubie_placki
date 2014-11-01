@@ -103,7 +103,8 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
         LOG("%d: position:%d, value:%d\n", i, m_cells[i].first, m_cells[i].second); 
 }
 
-vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX) {
+// static
+vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArray) {
     vector<int> result;
     
     bool values[9];
@@ -113,17 +114,17 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX) {
     // checks which values exist in column
     for (int y = 1; y <= 9; ++y)
     {
-        if(!accessTemporaryArray(y,itsX))
+        if(!sudokuArray[itsX-1 + (y-1)*9])
             continue;
-        values[accessTemporaryArray(y,itsX)-1] = false;
+        values[sudokuArray[itsX-1 + (y-1)*9]-1] = false;
     }
 
     // checks which values exist in row
     for (int x = 1; x <= 9; ++x)
     {
-        if(!accessTemporaryArray(itsY,x))
+        if(!sudokuArray[x-1 + (itsY-1)*9])
             continue;
-        values[accessTemporaryArray(itsY,x)-1] = false;
+        values[sudokuArray[x-1 + (itsY-1)*9]-1] = false;
     }
 
     int lowerXBorder;
@@ -157,9 +158,9 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX) {
     for (int y = lowerYBorder; y <= upperYBorder; ++y)
         for (int x = lowerXBorder; x <= upperXBorder; ++x)
         {
-            if(!accessTemporaryArray(y,x))
+            if(!sudokuArray[x-1 + (y-1)*9])
                 continue;
-            values[accessTemporaryArray(y,x)-1] = false;
+            values[sudokuArray[x-1 + (y-1)*9]-1] = false;
         }
 
     for (int i = 0; i < 9; ++i)
@@ -177,12 +178,12 @@ int SudokuSolver::recursiveSearchInTree(int position) {
     int itsX;
 
     convert1Dto2D(position, itsY, itsX);
-    // LOG("itsY: %d, itsX: %d\n", itsY, itsX);
-    vector<int> possibleValues = checkPossibleValues(itsY, itsX);
-    // LOG("possible values: ");
-    //for (unsigned i = 0; i < possibleValues.size(); ++i)
-     //   LOG("%d ", possibleValues[i]);
-    // LOG("\n");
+    LOG("itsY: %d, itsX: %d\n", itsY, itsX);
+    vector<int> possibleValues = checkPossibleValues(itsY, itsX, m_sudokuTemporaryArray);
+    LOG("possible values: ");
+    for (unsigned i = 0; i < possibleValues.size(); ++i)
+        LOG("%d ", possibleValues[i]);
+    LOG("\n");
 
     if(possibleValues.empty())
         return -1; // dead end, solution is somewhere else
@@ -210,7 +211,7 @@ int SudokuSolver::recursiveSearchInTree(int position) {
 
     for (unsigned i = 0; i < possibleValues.size(); ++i)
     {
-        // LOG("possibleValue: %d\n", possibleValues[i]);
+        LOG("possibleValue: %d\n", possibleValues[i]);
         accessTemporaryArray(itsY, itsX) = possibleValues[i];
         result = recursiveSearchInTree(nextCellPosition);
         if(!result)
@@ -235,17 +236,11 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
     int result = recursiveSearchInTree(position);
 
     auto endTime = std::chrono::steady_clock::now();
-
     auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-
     m_solveTime = elapsedTime.count();
 
     if(result)
-    {
-        LOG("Something went wrong! Sudoku must have solution, but it hasn't been found!\n");
-        assert(!result);
         return 0;
-    }
-
+    
     return m_sudokuTemporaryArray;
 }
