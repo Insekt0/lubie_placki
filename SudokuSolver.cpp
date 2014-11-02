@@ -1,5 +1,8 @@
 #include "SudokuSolver.h"
+
 #include <algorithm>
+#include <chrono>
+#include <utility>
 
 bool sort_function (pair<int,int> first_pair, pair<int,int> second_pair) {
     return first_pair.second > second_pair.second; 
@@ -85,7 +88,7 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
                 position = x-1 + (y-1)*9;
             m_cells.push_back(make_pair(position, value));
         }
-
+    assert(!m_cells.empty());
     switch(SCENARIO)
     {
         case MOST_NEIGHBOURS:
@@ -99,8 +102,6 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
             break;
     }
 
-    for(unsigned i = 0; i < m_cells.size(); ++i)
-        LOG("%d: position:%d, value:%d\n", i, m_cells[i].first, m_cells[i].second); 
 }
 
 // static
@@ -170,20 +171,18 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArr
     return result;
 }
 
-int SudokuSolver::recursiveSearchInTree(int position) {
+int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
 
     ++m_solveComplexity;
-
+#if ENSURE_FAST_GENERATION    
+    if(isGenerating && m_solveComplexity > MAX_OPERATIONS)
+        return -2;
+#endif
     int itsY;
     int itsX;
 
     convert1Dto2D(position, itsY, itsX);
-    LOG("itsY: %d, itsX: %d\n", itsY, itsX);
     vector<int> possibleValues = checkPossibleValues(itsY, itsX, m_sudokuTemporaryArray);
-    LOG("possible values: ");
-    for (unsigned i = 0; i < possibleValues.size(); ++i)
-        LOG("%d ", possibleValues[i]);
-    LOG("\n");
 
     if(possibleValues.empty())
         return -1; // dead end, solution is somewhere else
@@ -211,9 +210,8 @@ int SudokuSolver::recursiveSearchInTree(int position) {
 
     for (unsigned i = 0; i < possibleValues.size(); ++i)
     {
-        LOG("possibleValue: %d\n", possibleValues[i]);
         accessTemporaryArray(itsY, itsX) = possibleValues[i];
-        result = recursiveSearchInTree(nextCellPosition);
+        result = recursiveSearchInTree(nextCellPosition, isGenerating);
         if(!result)
             return 0;
     }
@@ -224,16 +222,17 @@ int SudokuSolver::recursiveSearchInTree(int position) {
     return -1; // dead end, solution is somewhere else
 }
 
-int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
+int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating) {
     auto startTime = std::chrono::steady_clock::now();
     m_solveComplexity = 0;
-    countElements();
+    if (SCENARIO == MOST_NEIGHBOURS)
+        countElements();
     findAndSortEmptyCells(SCENARIO);
     
     int position = m_cells[0].first;
     m_cells[0].first = -1;
     
-    int result = recursiveSearchInTree(position);
+    int result = recursiveSearchInTree(position, isGenerating);
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);

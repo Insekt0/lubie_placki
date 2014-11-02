@@ -2,8 +2,7 @@
 #define SudokuSolver_h
 
 #include "Common.h"
-#include <chrono>
-#include <utility>
+
 #include <vector>
 
 
@@ -11,11 +10,11 @@ class SudokuSolver {
 public:
     SudokuSolver(int* sudokuArray);
     ~SudokuSolver();
-    int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO);
+    int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating = false);
     static vector<int> checkPossibleValues(int itsY, int itsX, int* sudokuArray);
     void countElements();
     void findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO);
-    int recursiveSearchInTree(int position);
+    int recursiveSearchInTree(int position, bool isGenerating);
 
     inline int& accessSudokuArray(int y, int x) { return m_sudokuArray[(x-1) + (y-1)*9]; }
     inline int& accessTemporaryArray(int y, int x) { return m_sudokuTemporaryArray[x-1 + (y-1)*9]; }

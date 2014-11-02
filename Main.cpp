@@ -1,55 +1,42 @@
-#include <iostream>
-#include <sstream>
-#include "Common.h"
 #include "SudokuGenerator.h"
 #include "SudokuSolver.h"
+
 #include <ctime>
 #include <cstdlib>
+#include <iostream>
 
 int main()
 {
-	cout << "Nasz super sudoku solver" << endl;
-    cout << "Podaj poczatkowa liczbe pol sudoku" << endl;
-    std::srand ( unsigned ( std::time(0) ) );
-    int filledCellsNumber;
-    cin >> filledCellsNumber;
-    ostringstream ss;
-    ss << filledCellsNumber;
-    string filename = ss.str();
-
-    SudokuGenerator generator;
+	cout << "Nasz super sudoku solver" << endl << endl;
+    cout << "Podaj poziom od 1 do 5 - 1: extremely easy, 5: evil" << endl;
+    srand(unsigned(time(0)));
+    unsigned levelNumber;
+    cin >> levelNumber;
+    assert(levelNumber > 0 && levelNumber <= 5);
+    COMPLEXITY_LEVELS level = static_cast<COMPLEXITY_LEVELS>(levelNumber);
     int* sudokuArray = new int[81]();
-
-    generator.generate(sudokuArray, filledCellsNumber);
-    generator.printSudoku(sudokuArray, filename);
+    
+    SudokuGenerator generator;
+    generator.generate(sudokuArray, level);
 
     //generator.readFromFile(sudokuArray, filename);
     
     SudokuSolver Sudoku1(sudokuArray);
     int* sudokuResultArray1 = Sudoku1.solve(MOST_NEIGHBOURS);
-    generator.saveToFile(sudokuResultArray1);
 
-    string result;
-    result.append(filename); 
-    result.append(" result");
-
-    generator.printSudoku(sudokuResultArray1, result);
+    generator.printSudoku(sudokuResultArray1, "MOST_NEIGHBOURS");
     
     cout << "Sudoku solved in MOST_NEIGHBOURS mode in: " << Sudoku1.getSolveTime()/1000000 << "s " << (Sudoku1.getSolveTime() % 1000000)/1000 << "ms " << (Sudoku1.getSolveTime() % 1000) << "us" << endl;
     cout << "Operations performed: " << Sudoku1.getSolveComplexity() << endl;
     
-    /*SudokuSolver Sudoku2(sudokuArray);
+    SudokuSolver Sudoku2(sudokuArray);
     int* sudokuResultArray2 = Sudoku2.solve(RANDOM);
-    generator.printSudoku(sudokuResultArray2, filename);
+    generator.printSudoku(sudokuResultArray2, "RANDOM");
     
     cout << "Sudoku solved in RANDOM mode in: " << Sudoku2.getSolveTime()/1000000 << "s " << (Sudoku2.getSolveTime() % 1000000)/1000 << "ms " << (Sudoku2.getSolveTime() % 1000) << "us" << endl;
     cout << "Operations performed: " << Sudoku2.getSolveComplexity() << endl << endl;
     
-    if(Sudoku1.getSolveTime() < Sudoku2.getSolveTime())
-        cout << "MOST_NEIGHBOURS mode was " << Sudoku2.getSolveTime() / Sudoku1.getSolveTime() << " times faster than RANDOM mode" << endl;
-    else
-        cout << "RANDOM mode was " << Sudoku1.getSolveTime() / Sudoku2.getSolveTime() << " times faster than MOST_NEIGHBOURS mode" << endl;
-    delete[] sudokuArray;*/
+    delete[] sudokuArray;
 	
     cout << endl;
     system("Pause");

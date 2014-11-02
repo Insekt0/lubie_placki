@@ -1,56 +1,99 @@
 #include "SudokuGenerator.h"
 
 #include "SudokuSolver.h"
+
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 #include <fstream>
 
-
-
-void SudokuGenerator::generate(int* sudokuArray, int numberOfCellsToFill) {
-    int* result = 0;
-    int chosenPosition;
-    bool earlyReturnFromLoop;
+void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
+    int result[81];
+    int* tempResult = 0;
     int y;
     int x;
     unsigned attempt = 0;
-    while(!result)
+    int chosenPosition;
+    vector<int> positions;
+    
+    for (int i = 0; i < 81; ++i)
+        positions.push_back(i);
+    while(1)
     {
-        for (int i = 0; i < 81; ++i)
-            sudokuArray[i] = 0;
-
-        vector<int> positions;
-
-        for (int i = 0; i < 81; ++i)
-            positions.push_back(i);
+        ++attempt;
+        for (int i = 0; i < 9; ++i)
+            sudokuArray[positions[i]] = 0;
 
         random_shuffle(positions.begin(), positions.end());
-        
-        earlyReturnFromLoop = false;
 
-        for (int i = 0; i < numberOfCellsToFill; ++i)
+        for (int i = 0; i < 9; ++i)
         {
-            vector<int> possibleValues;
             chosenPosition = positions[i];
             SudokuSolver::convert1Dto2D(chosenPosition, y, x);
-            possibleValues = SudokuSolver::checkPossibleValues(y,x,sudokuArray);
-            
-            if(possibleValues.empty())
-            {
-                earlyReturnFromLoop = true;
-                break;
-            }
-            
+            vector<int> possibleValues = SudokuSolver::checkPossibleValues(y, x, sudokuArray);
             random_shuffle(possibleValues.begin(), possibleValues.end());
             sudokuArray[chosenPosition] = possibleValues[0];
         }
-
-        if(earlyReturnFromLoop)
-            continue;
-        
-        SudokuSolver solver(sudokuArray);
-        result = solver.solve(MOST_NEIGHBOURS);
-        cout << "Attempt: " << attempt++ << endl;
+        SudokuSolver sudoku(sudokuArray);
+        int* tempResult = sudoku.solve(MOST_NEIGHBOURS, true);
+        if(tempResult)
+        { 
+#if DEBUG_MODE 
+            printSudoku(sudokuArray, "generated");
+#endif
+            for(int i = 0; i < 81; ++i)
+                result[i] = tempResult[i];
+#if DEBUG_MODE            
+            printSudoku(result, "solved");
+#endif
+            LOG("Sudoku solved in MOST_NEIGHBOURS mode in: %ds %dms %dus\n", sudoku.getSolveTime()/1000000, (sudoku.getSolveTime() % 1000000)/1000, (sudoku.getSolveTime() % 1000));
+            LOG("Operations performed: %d\n", sudoku.getSolveComplexity());
+            LOG("Attempt: %d\n", attempt);
+            break;
+        }
     }
+    
+    for (int i = 0; i < 81; ++i)
+        sudokuArray[i] = result[i];
+
+    // in this moment we have sudoku board fully filled
+    // now we are removing cells
+
+    string level;
+    int numberOfCellsLeftOnBoard;
+    switch(LEVEL)
+    {
+    case EXTREMELY_EASY:
+        level = "Extremely easy";
+        numberOfCellsLeftOnBoard = rand() % 31 + 50;
+        break;
+    case EASY:
+        level = "Easy";
+        numberOfCellsLeftOnBoard = rand() % 14 + 36;
+        break;
+    case MEDIUM:
+        level = "Medium";
+        numberOfCellsLeftOnBoard = rand() % 4 + 32;
+        break;
+    case DIFFICULT:
+        level = "Difficult";
+        numberOfCellsLeftOnBoard = rand() % 4 + 28;
+        break;
+    case EVIL:
+        level = "Evil";
+        numberOfCellsLeftOnBoard = rand() % 6 + 22;
+        break;
+    default:
+        assert(false);
+    }
+
+    LOG("numberOfCellsLeftOnBoard = %d\n", numberOfCellsLeftOnBoard);
+    LOG("Level: %s\n", level.c_str());
+
+    for (int i = 0; i < (81 - numberOfCellsLeftOnBoard); ++i)
+        sudokuArray[positions[i]] = 0;
+
+    printSudoku(sudokuArray, level);
 }
 
 void SudokuGenerator::readFromFile(int* sudokuArray, string filename) {
@@ -76,7 +119,7 @@ void SudokuGenerator::saveToFile(int* sudokuArray) {
 
 void SudokuGenerator::printSudoku(int* sudokuArray, string name) {
     
-    cout << "\n    Sudoku: " << name;
+    cout << "\nSudoku: " << name;
     for (int i = 0; i < 81; ++i)
     {
         if(i%9 == 0)
