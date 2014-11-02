@@ -15,11 +15,15 @@ SudokuSolver::SudokuSolver(int* sudokuArray) {
     m_rowsElementsArray = new int[9]();
     m_smallSquareArray = new int[9]();
     m_cells.reserve(81);
-    m_cellsArray = new int[81]();
+    isSudokuAlreadySolved = true;
+    int value;
     for(int i = 0; i < 81; ++i)
     {
-        m_sudokuArray[i] = sudokuArray[i];
-        m_sudokuTemporaryArray[i] = sudokuArray[i];
+        value = sudokuArray[i];
+        if(!value && isSudokuAlreadySolved)
+            isSudokuAlreadySolved = false;
+        m_sudokuArray[i] = value;
+        m_sudokuTemporaryArray[i] = value;
     }
 }
 
@@ -29,7 +33,6 @@ SudokuSolver::~SudokuSolver() {
     delete[] m_columnsElementsArray;
     delete[] m_rowsElementsArray;
     delete[] m_smallSquareArray;
-    delete[] m_cellsArray;
 }
 
 void SudokuSolver::countElements() {
@@ -195,10 +198,10 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
     unsigned nextCellPosition = -1;
     unsigned vectorIndex = -1;
 
-    for (unsigned i = 0; i < m_cells.size(); ++i)
-        if(m_cells[i].first != -1)
+    for (unsigned i = 0; i < m_cellsNumber; ++i)
+        if(m_cellsArray[i] != -1)
         {
-            nextCellPosition = m_cells[i].first;
+            nextCellPosition = m_cellsArray[i];
             vectorIndex = i;
             break;
         }
@@ -210,7 +213,7 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
         return 0; // Solution found
     }
 
-    m_cells[vectorIndex].first = -1;
+    m_cellsArray[vectorIndex] = -1;
     int result;
 
     for (unsigned i = 0; i < 9; ++i)
@@ -224,29 +227,36 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
     }
 
     accessTemporaryArray(itsY, itsX) = 0;
-    m_cells[vectorIndex].first = nextCellPosition;
+    m_cellsArray[vectorIndex] = nextCellPosition;
 
     return -1; // dead end, solution is somewhere else
 }
 
 int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating) {
+    if(isSudokuAlreadySolved)
+        return m_sudokuArray;
     auto startTime = std::chrono::steady_clock::now();
     m_solveComplexity = 0;
     if (SCENARIO == MOST_NEIGHBOURS)
         countElements();
     findAndSortEmptyCells(SCENARIO);
     
+    m_cellsNumber = m_cells.size();
+    m_cellsArray = new int[m_cellsNumber]();
 
+    for (unsigned i = 0; i < m_cellsNumber; ++i)
+        m_cellsArray[i] = m_cells[i].first;
 
-    int position = m_cells[0].first;
-    m_cells[0].first = -1;
+    int position = m_cellsArray[0];
+    m_cellsArray[0] = -1;
     
     int result = recursiveSearchInTree(position, isGenerating);
 
     auto endTime = std::chrono::steady_clock::now();
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
     m_solveTime = elapsedTime.count();
 
+    delete[] m_cellsArray;
     if(result)
         return 0;
     

@@ -33,6 +33,8 @@ private:
     int* m_smallSquareArray;
     vector< pair<int,int> > m_cells;
     int* m_cellsArray;
+    unsigned m_cellsNumber;
+    bool isSudokuAlreadySolved;
 };
 
 

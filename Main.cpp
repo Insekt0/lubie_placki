@@ -19,21 +19,23 @@ int main()
     SudokuGenerator generator;
     generator.generate(sudokuArray, level);
 
-    //generator.readFromFile(sudokuArray, filename);
-    
+    //generator.readFromFile(sudokuArray, "sudoku3.txt");
+    //generator.printSudoku(sudokuArray, "sudoku3.txt");
+
+
     SudokuSolver Sudoku1(sudokuArray);
     int* sudokuResultArray1 = Sudoku1.solve(MOST_NEIGHBOURS);
 
     generator.printSudoku(sudokuResultArray1, "MOST_NEIGHBOURS");
     
-    cout << "Sudoku solved in MOST_NEIGHBOURS mode in: " << Sudoku1.getSolveTime()/1000000 << "s " << (Sudoku1.getSolveTime() % 1000000)/1000 << "ms " << (Sudoku1.getSolveTime() % 1000) << "us" << endl;
+    cout << "Sudoku solved in MOST_NEIGHBOURS mode in: " << Sudoku1.getSolveTime()/1000000000 << "s " << (Sudoku1.getSolveTime() % 1000000000)/1000000 << "ms " << (Sudoku1.getSolveTime() % 1000000) / 1000 << "us " << (Sudoku1.getSolveTime() % 1000) << "ns" << endl;
     cout << "Operations performed: " << Sudoku1.getSolveComplexity() << endl;
     
     SudokuSolver Sudoku2(sudokuArray);
     int* sudokuResultArray2 = Sudoku2.solve(RANDOM);
     generator.printSudoku(sudokuResultArray2, "RANDOM");
     
-    cout << "Sudoku solved in RANDOM mode in: " << Sudoku2.getSolveTime()/1000000 << "s " << (Sudoku2.getSolveTime() % 1000000)/1000 << "ms " << (Sudoku2.getSolveTime() % 1000) << "us" << endl;
+    cout << "Sudoku solved in RANDOM mode in: " << Sudoku2.getSolveTime()/1000000000 << "s " << (Sudoku2.getSolveTime() % 1000000000)/1000000 << "ms " << (Sudoku2.getSolveTime() % 1000000) / 1000 << "us " << (Sudoku2.getSolveTime() % 1000) << "ns" << endl;
     cout << "Operations performed: " << Sudoku2.getSolveComplexity() << endl << endl;
     
     delete[] sudokuArray;
