@@ -14,6 +14,8 @@ SudokuSolver::SudokuSolver(int* sudokuArray) {
     m_columnsElementsArray = new int[9]();
     m_rowsElementsArray = new int[9]();
     m_smallSquareArray = new int[9]();
+    m_cells.reserve(81);
+    m_cellsArray = new int[81]();
     for(int i = 0; i < 81; ++i)
     {
         m_sudokuArray[i] = sudokuArray[i];
@@ -27,6 +29,7 @@ SudokuSolver::~SudokuSolver() {
     delete[] m_columnsElementsArray;
     delete[] m_rowsElementsArray;
     delete[] m_smallSquareArray;
+    delete[] m_cellsArray;
 }
 
 void SudokuSolver::countElements() {
@@ -105,19 +108,16 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
 }
 
 // static
-vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArray) {
-    vector<int> result;
-    
-    bool values[9];
+void SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArray, bool* resultArray) {
     for(int i =0; i < 9; ++i)
-        values[i] = true;
+        resultArray[i] = true;
 
     // checks which values exist in column
     for (int y = 1; y <= 9; ++y)
     {
         if(!sudokuArray[itsX-1 + (y-1)*9])
             continue;
-        values[sudokuArray[itsX-1 + (y-1)*9]-1] = false;
+        resultArray[sudokuArray[itsX-1 + (y-1)*9]-1] = false;
     }
 
     // checks which values exist in row
@@ -125,7 +125,7 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArr
     {
         if(!sudokuArray[x-1 + (itsY-1)*9])
             continue;
-        values[sudokuArray[x-1 + (itsY-1)*9]-1] = false;
+        resultArray[sudokuArray[x-1 + (itsY-1)*9]-1] = false;
     }
 
     int lowerXBorder;
@@ -161,14 +161,8 @@ vector<int> SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArr
         {
             if(!sudokuArray[x-1 + (y-1)*9])
                 continue;
-            values[sudokuArray[x-1 + (y-1)*9]-1] = false;
+            resultArray[sudokuArray[x-1 + (y-1)*9]-1] = false;
         }
-
-    for (int i = 0; i < 9; ++i)
-        if(values[i]) 
-            result.push_back(i+1);
-
-    return result;
 }
 
 int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
@@ -182,9 +176,20 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
     int itsX;
 
     convert1Dto2D(position, itsY, itsX);
-    vector<int> possibleValues = checkPossibleValues(itsY, itsX, m_sudokuTemporaryArray);
+    bool resultArray[9];
+    checkPossibleValues(itsY, itsX, m_sudokuTemporaryArray, resultArray);
 
-    if(possibleValues.empty())
+    bool shouldReturn = true;
+    int firstPossibleValue;
+    for (int i = 0; i < 9; ++i)
+        if(resultArray[i] == true)
+        {
+            firstPossibleValue = i+1;
+            shouldReturn = false;
+            break;
+        }
+
+    if(shouldReturn)
         return -1; // dead end, solution is somewhere else
 
     unsigned nextCellPosition = -1;
@@ -201,16 +206,18 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
     // LOG("vectorIndex: %d\n", vectorIndex);
     if (nextCellPosition == -1)
     {
-        accessTemporaryArray(itsY, itsX) = possibleValues[0];
+        accessTemporaryArray(itsY, itsX) = firstPossibleValue;
         return 0; // Solution found
     }
 
     m_cells[vectorIndex].first = -1;
     int result;
 
-    for (unsigned i = 0; i < possibleValues.size(); ++i)
+    for (unsigned i = 0; i < 9; ++i)
     {
-        accessTemporaryArray(itsY, itsX) = possibleValues[i];
+        if(!resultArray[i])
+            continue;
+        accessTemporaryArray(itsY, itsX) = i+1;
         result = recursiveSearchInTree(nextCellPosition, isGenerating);
         if(!result)
             return 0;
@@ -229,6 +236,8 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerati
         countElements();
     findAndSortEmptyCells(SCENARIO);
     
+
+
     int position = m_cells[0].first;
     m_cells[0].first = -1;
     

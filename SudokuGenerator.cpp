@@ -25,14 +25,20 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
             sudokuArray[positions[i]] = 0;
 
         random_shuffle(positions.begin(), positions.end());
-
+        bool possibleValues[9];
         for (int i = 0; i < 9; ++i)
         {
             chosenPosition = positions[i];
             SudokuSolver::convert1Dto2D(chosenPosition, y, x);
-            vector<int> possibleValues = SudokuSolver::checkPossibleValues(y, x, sudokuArray);
-            random_shuffle(possibleValues.begin(), possibleValues.end());
-            sudokuArray[chosenPosition] = possibleValues[0];
+            
+            SudokuSolver::checkPossibleValues(y, x, sudokuArray, possibleValues);
+            
+            for(int i = 0; i < 9; ++i)
+                if(possibleValues[i])
+                {
+                    sudokuArray[chosenPosition] = i+1;
+                    break;
+                }
         }
         SudokuSolver sudoku(sudokuArray);
         int* tempResult = sudoku.solve(MOST_NEIGHBOURS, true);

@@ -11,7 +11,7 @@ public:
     SudokuSolver(int* sudokuArray);
     ~SudokuSolver();
     int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating = false);
-    static vector<int> checkPossibleValues(int itsY, int itsX, int* sudokuArray);
+    static void checkPossibleValues(int itsY, int itsX, int* sudokuArray, bool* resultArray);
     void countElements();
     void findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO);
     int recursiveSearchInTree(int position, bool isGenerating);
@@ -32,6 +32,7 @@ private:
     int* m_rowsElementsArray;
     int* m_smallSquareArray;
     vector< pair<int,int> > m_cells;
+    int* m_cellsArray;
 };
 
 
