@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <Windows.h>
 
 void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
     int result[81];
@@ -123,7 +124,45 @@ void SudokuGenerator::saveToFile(int* sudokuArray) {
     myfile.close();
 }
 
-void SudokuGenerator::printSudoku(int* sudokuArray, string name) {
+struct color {
+    color(WORD attribute):m_color(attribute){};
+    WORD m_color;
+};
+
+template <class _Elem, class _Traits>
+std::basic_ostream<_Elem,_Traits>& 
+      operator<<(std::basic_ostream<_Elem,_Traits>& i, color& c)
+{
+    HANDLE hStdout=GetStdHandle(STD_OUTPUT_HANDLE); 
+    SetConsoleTextAttribute(hStdout,c.m_color);
+    return i;
+}
+
+inline std::ostream& red(std::ostream &s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE); 
+    SetConsoleTextAttribute(hStdout, 
+                FOREGROUND_RED|FOREGROUND_INTENSITY);
+    return s;
+}
+
+inline std::ostream& white(std::ostream &s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE); 
+    SetConsoleTextAttribute(hStdout, 
+       FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+    return s;
+}
+
+inline std::ostream& blue(std::ostream &s)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE); 
+    SetConsoleTextAttribute(hStdout, FOREGROUND_BLUE
+              |FOREGROUND_GREEN|FOREGROUND_INTENSITY);
+    return s;
+}
+
+void SudokuGenerator::printSudoku(int* sudokuArray, string name, int* baseArray) {
     
     cout << "\nSudoku: " << name;
     for (int i = 0; i < 81; ++i)
@@ -131,16 +170,25 @@ void SudokuGenerator::printSudoku(int* sudokuArray, string name) {
         if(i%9 == 0)
             cout << endl;
         if(i%27 == 0)
-            cout << " -----------------------" << endl;
+            cout << white << " -----------------------" << endl;
         
         if(i%3 == 0)
-            cout << "| ";
-        cout << sudokuArray[i] << " ";
-
+            cout << white << "| ";
+        
+        if(!baseArray && sudokuArray[i])
+            cout << white << sudokuArray[i] << " ";
+        else if(!baseArray)
+            cout << "  ";
+        else if(sudokuArray[i] && sudokuArray[i] == baseArray[i])
+            cout << white << sudokuArray[i] << " ";
+        else if(sudokuArray[i])
+            cout << red << sudokuArray[i] << " ";
+        else
+            cout << "  ";
         if(i%9 == 8)
-            cout << "|";
+            cout << white << "|";
         if(i == 80)
-            cout << "\n -----------------------" << endl;
+            cout << white << "\n -----------------------" << endl;
     }
 
 }
