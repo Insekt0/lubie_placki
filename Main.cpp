@@ -19,8 +19,8 @@ int main()
     SudokuGenerator generator;
     generator.generate(sudokuArray, level);
 
-    //generator.readFromFile(sudokuArray, "sudoku3.txt");
-    //generator.printSudoku(sudokuArray, "sudoku3.txt");
+    // generator.readFromFile(sudokuArray, "sudoku3.txt");
+    // generator.printSudoku(sudokuArray, "sudoku3.txt");
 
 
     SudokuSolver Sudoku1(sudokuArray);

@@ -5,15 +5,12 @@
 #include <utility>
 
 bool sort_function (pair<int,int> first_pair, pair<int,int> second_pair) {
-    return first_pair.second > second_pair.second; 
+    return first_pair.second < second_pair.second; 
 }
 
 SudokuSolver::SudokuSolver(int* sudokuArray) {
     m_sudokuArray = new int[81]();
     m_sudokuTemporaryArray = new int[81]();
-    m_columnsElementsArray = new int[9]();
-    m_rowsElementsArray = new int[9]();
-    m_smallSquareArray = new int[9]();
     m_cells.reserve(81);
     isSudokuAlreadySolved = true;
     int value;
@@ -30,47 +27,12 @@ SudokuSolver::SudokuSolver(int* sudokuArray) {
 SudokuSolver::~SudokuSolver() {
     delete[] m_sudokuArray;
     delete[] m_sudokuTemporaryArray;
-    delete[] m_columnsElementsArray;
-    delete[] m_rowsElementsArray;
-    delete[] m_smallSquareArray;
-}
-
-void SudokuSolver::countElements() {
-
-    for (int y = 1; y <= 9; ++y)
-        for (int x = 1; x <= 9; ++x)
-        {
-            if (!accessSudokuArray(y, x))
-                continue;
-            ++m_rowsElementsArray[y-1];
-            ++m_columnsElementsArray[x-1];
-            ++accessSmallSquareArray((y + 2) / 3, (x + 2) / 3);
-        }
-    
-    LOG("Row elements array\n");
-    for(int i = 0; i < 9; ++i)
-    {
-        LOG("%d\n", m_rowsElementsArray[i]);
-    }
-    LOG("Column elements array\n");
-    for(int i = 0; i < 9; ++i)
-    {
-        LOG("%d ", m_columnsElementsArray[i]);
-    }
-    LOG("\nSmall squares elements array");
-    for(int i = 0; i < 9; ++i)
-    {
-        if(i%3 == 0)
-            LOG("\n");
-        LOG("%d ", m_smallSquareArray[i]);
-    }
-    LOG("\n");
-   
 }
 
 void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
     int value;
     int position;
+    bool resultArray[9];
 
     for (int y = 1; y <= 9; ++y)
         for (int x = 1; x <= 9; ++x)
@@ -81,8 +43,10 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
             switch(SCENARIO)
             {
                 case MOST_NEIGHBOURS:
-                    value = m_rowsElementsArray[y-1] < m_columnsElementsArray[x-1] ? m_columnsElementsArray[x-1] : m_rowsElementsArray[y-1];
-                    value = value < accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) ? accessSmallSquareArray((y + 2) / 3, (x + 2) / 3) : value;
+                    value = 0;
+                    checkPossibleValues(y, x, m_sudokuArray, resultArray);
+                    for (int i = 0; i < 9; ++i)
+                        value = resultArray[i] ? value + 1 : value;
                     break;
                 case RANDOM:
                     value = 0;
@@ -108,6 +72,13 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
             break;
     }
 
+    int y;
+    int x;
+    for (unsigned i = 0; i < m_cells.size(); ++i)
+    {
+        convert1Dto2D(m_cells[i].first, y, x); 
+        LOG("y: %d, x: %d, possible values: %d\n", y, x, m_cells[i].second); 
+    }
 }
 
 // static
@@ -237,8 +208,6 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerati
         return m_sudokuArray;
     auto startTime = std::chrono::steady_clock::now();
     m_solveComplexity = 0;
-    if (SCENARIO == MOST_NEIGHBOURS)
-        countElements();
     findAndSortEmptyCells(SCENARIO);
     
     m_cellsNumber = m_cells.size();

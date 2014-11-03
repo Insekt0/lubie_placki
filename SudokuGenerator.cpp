@@ -52,8 +52,12 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
                 result[i] = tempResult[i];
 #if DEBUG_MODE            
             printSudoku(result, "solved");
+            unsigned timeInSec = unsigned(sudoku.getSolveTime()/1000000000);
+            unsigned timeInMiliSec = (sudoku.getSolveTime() % 1000000000)/1000000;
+            unsigned timeInMicroSec = (sudoku.getSolveTime() % 1000000) / 1000;
+            unsigned timeInNanoSec = sudoku.getSolveTime() % 1000;
 #endif
-            LOG("Sudoku solved in MOST_NEIGHBOURS mode in: %ds %dms %dus\n", sudoku.getSolveTime()/1000000, (sudoku.getSolveTime() % 1000000)/1000, (sudoku.getSolveTime() % 1000));
+            LOG("Sudoku solved in MOST_NEIGHBOURS mode in: %us %ums %uus %uns\n", timeInSec, timeInMiliSec, timeInMicroSec, timeInNanoSec);
             LOG("Operations performed: %d\n", sudoku.getSolveComplexity());
             LOG("Attempt: %d\n", attempt);
             break;
