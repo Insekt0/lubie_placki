@@ -70,7 +70,7 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
     for (unsigned i = 0; i < m_cellsVector.size(); ++i)
     {
         convert1Dto2D(m_cellsVector[i].first, y, x); 
-        LOG("y: %d, x: %d, possible values: %d\n", y, x, m_cells[i].second); 
+        LOG("y: %d, x: %d, possible values: %d\n", y, x, m_cellsVector[i].second); 
     }
 #endif
 }
