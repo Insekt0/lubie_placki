@@ -10,17 +10,17 @@ int main()
 	cout << "Nasz super sudoku solver" << endl << endl;
     cout << "Podaj poziom od 1 do 5 - 1: extremely easy, 5: evil" << endl;
     srand(unsigned(time(0)));
-    unsigned levelNumber;
-    cin >> levelNumber;
-    assert(levelNumber > 0 && levelNumber <= 5);
-    COMPLEXITY_LEVELS level = static_cast<COMPLEXITY_LEVELS>(levelNumber);
+    //unsigned levelNumber;
+    //cin >> levelNumber;
+    //assert(levelNumber > 0 && levelNumber <= 5);
+    //COMPLEXITY_LEVELS level = static_cast<COMPLEXITY_LEVELS>(levelNumber);
     int* sudokuArray = new int[81]();
     
     SudokuGenerator generator;
-    generator.generate(sudokuArray, level);
+    //generator.generate(sudokuArray, level);
 
-    // generator.readFromFile(sudokuArray, "sudoku3.txt");
-    // generator.printSudoku(sudokuArray, "sudoku3.txt");
+    generator.readFromFile(sudokuArray, "sudoku_whs.txt");
+    generator.printSudoku(sudokuArray, "sudoku_whs.txt");
 
 
     SudokuSolver Sudoku1(sudokuArray);

@@ -9,9 +9,7 @@ bool sort_function (pair<int,int> first_pair, pair<int,int> second_pair) {
 }
 
 SudokuSolver::SudokuSolver(int* sudokuArray) {
-    m_sudokuArray = new int[81]();
-    m_sudokuTemporaryArray = new int[81]();
-    m_cells.reserve(81);
+    m_cellsVector.reserve(81);
     isSudokuAlreadySolved = true;
     int value;
     for(int i = 0; i < 81; ++i)
@@ -22,11 +20,6 @@ SudokuSolver::SudokuSolver(int* sudokuArray) {
         m_sudokuArray[i] = value;
         m_sudokuTemporaryArray[i] = value;
     }
-}
-
-SudokuSolver::~SudokuSolver() {
-    delete[] m_sudokuArray;
-    delete[] m_sudokuTemporaryArray;
 }
 
 void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO) {
@@ -56,29 +49,30 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
                     break;
             }
                 position = x-1 + (y-1)*9;
-            m_cells.push_back(make_pair(position, value));
+            m_cellsVector.push_back(make_pair(position, value));
         }
-    assert(!m_cells.empty());
+    assert(!m_cellsVector.empty());
     switch(SCENARIO)
     {
         case MOST_NEIGHBOURS:
-            sort(m_cells.begin(), m_cells.end(), sort_function);
+            sort(m_cellsVector.begin(), m_cellsVector.end(), sort_function);
             break;
         case RANDOM:
-            random_shuffle(m_cells.begin(), m_cells.end());
+            random_shuffle(m_cellsVector.begin(), m_cellsVector.end());
             break;
         default:
             assert(false);
             break;
     }
-
+#if DEBUG_MODE
     int y;
     int x;
-    for (unsigned i = 0; i < m_cells.size(); ++i)
+    for (unsigned i = 0; i < m_cellsVector.size(); ++i)
     {
-        convert1Dto2D(m_cells[i].first, y, x); 
+        convert1Dto2D(m_cellsVector[i].first, y, x); 
         LOG("y: %d, x: %d, possible values: %d\n", y, x, m_cells[i].second); 
     }
+#endif
 }
 
 // static
@@ -139,24 +133,70 @@ void SudokuSolver::checkPossibleValues(int itsY, int itsX, int* sudokuArray, boo
         }
 }
 
-int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
+void SudokuSolver::initializeValues()
+{
+    for (int i = 0; i < 9; ++i)
+    {
+        m_rows[i] = 0;
+        m_columns[i] = 0;
+        m_squares[i] = 0;
+    }
+    int positionInBigArray;
+    int positionOfSquare;
+    for (int x = 0; x < 9; ++x)
+        for(int y = 0; y < 9; ++y)
+        {
+            positionInBigArray = x + 9*y;
+            positionOfSquare = x/3 + (y/3)*3;
+            if(m_sudokuArray[positionInBigArray])
+            {
+                m_rows[y] = m_rows[y] | 1 << m_sudokuArray[positionInBigArray]; 
+                m_columns[x] = m_columns[x] | 1 << m_sudokuArray[positionInBigArray];
+                m_squares[positionOfSquare] = m_squares[positionOfSquare] | 1 << m_sudokuArray[positionInBigArray];
+            }
+            m_cells[positionInBigArray].m_column = m_columns + x;
+            m_cells[positionInBigArray].m_row = m_rows + y;
+            m_cells[positionInBigArray].m_square = m_squares + positionOfSquare;
+        }
+}
+
+inline bool SudokuSolver::checkCollision(int position, int value)
+{
+    return !!((*m_cells[position].m_column | *m_cells[position].m_row | *m_cells[position].m_square) & (1 << value));
+}
+
+void SudokuSolver::setCellValue(int position, int value)
+{
+    *m_cells[position].m_column = *m_cells[position].m_column | (1 << value);
+    *m_cells[position].m_row = *m_cells[position].m_row | (1 << value);
+    *m_cells[position].m_square = *m_cells[position].m_square | (1 << value);
+}
+
+void SudokuSolver::removeCellValue(int position, int value)
+{
+    *m_cells[position].m_column = *m_cells[position].m_column ^ (1 << value);
+    *m_cells[position].m_row = *m_cells[position].m_row ^ (1 << value);
+    *m_cells[position].m_square = *m_cells[position].m_square ^ (1 << value);
+}
+
+
+int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating, unsigned newIndex) {
 
     ++m_solveComplexity;
 #if ENSURE_FAST_GENERATION    
     if(isGenerating && m_solveComplexity > MAX_OPERATIONS)
         return -2;
 #endif
-    int itsY;
-    int itsX;
-
-    convert1Dto2D(position, itsY, itsX);
-    bool resultArray[9];
-    checkPossibleValues(itsY, itsX, m_sudokuTemporaryArray, resultArray);
+    
+    bool collisionArray[9];
+    
+    for (int i = 0; i < 9; ++i)
+        collisionArray[i] = checkCollision(position, i+1);
 
     bool shouldReturn = true;
     int firstPossibleValue;
     for (int i = 0; i < 9; ++i)
-        if(resultArray[i] == true)
+        if(!collisionArray[i]) // == false
         {
             firstPossibleValue = i+1;
             shouldReturn = false;
@@ -166,40 +206,31 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating) {
     if(shouldReturn)
         return -1; // dead end, solution is somewhere else
 
-    unsigned nextCellPosition = -1;
-    unsigned vectorIndex = -1;
-
-    for (unsigned i = 0; i < m_cellsNumber; ++i)
-        if(m_cellsArray[i] != -1)
-        {
-            nextCellPosition = m_cellsArray[i];
-            vectorIndex = i;
-            break;
-        }
-    // LOG("nextCellPosition: %d\n", nextCellPosition);
-    // LOG("vectorIndex: %d\n", vectorIndex);
-    if (nextCellPosition == -1)
+    if (m_cellsNumber == newIndex)
     {
-        accessTemporaryArray(itsY, itsX) = firstPossibleValue;
+        m_sudokuTemporaryArray[position] = firstPossibleValue;
         return 0; // Solution found
     }
 
-    m_cellsArray[vectorIndex] = -1;
+    unsigned nextCellPosition = m_cellsArray[newIndex];
+    m_cellsArray[newIndex] = -1;
+
     int result;
 
-    for (unsigned i = 0; i < 9; ++i)
+    for (unsigned i = firstPossibleValue; i <= 9; ++i)
     {
-        if(!resultArray[i])
+        if(collisionArray[i-1])
             continue;
-        accessTemporaryArray(itsY, itsX) = i+1;
-        result = recursiveSearchInTree(nextCellPosition, isGenerating);
+        m_sudokuTemporaryArray[position] = i;
+        setCellValue(position,i);
+        result = recursiveSearchInTree(nextCellPosition, isGenerating, newIndex+1);
         if(!result)
             return 0;
+        removeCellValue(position,i);
     }
 
-    accessTemporaryArray(itsY, itsX) = 0;
-    m_cellsArray[vectorIndex] = nextCellPosition;
-
+    m_sudokuTemporaryArray[position] = 0;
+    m_cellsArray[newIndex] = nextCellPosition;
     return -1; // dead end, solution is somewhere else
 }
 
@@ -209,23 +240,21 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerati
     auto startTime = std::chrono::steady_clock::now();
     m_solveComplexity = 0;
     findAndSortEmptyCells(SCENARIO);
+    initializeValues();
     
-    m_cellsNumber = m_cells.size();
-    m_cellsArray = new int[m_cellsNumber]();
-
+    m_cellsNumber = m_cellsVector.size();
     for (unsigned i = 0; i < m_cellsNumber; ++i)
-        m_cellsArray[i] = m_cells[i].first;
+        m_cellsArray[i] = m_cellsVector[i].first;
 
     int position = m_cellsArray[0];
     m_cellsArray[0] = -1;
     
-    int result = recursiveSearchInTree(position, isGenerating);
+    int result = recursiveSearchInTree(position, isGenerating, 1);
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
     m_solveTime = elapsedTime.count();
 
-    delete[] m_cellsArray;
     if(result)
         return 0;
     
