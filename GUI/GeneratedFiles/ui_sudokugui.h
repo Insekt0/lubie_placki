@@ -29,9 +29,11 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <stdio.h>
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
-
+	using namespace std;
 class Ui_SudokuGUIClass
 {
 public:
@@ -167,77 +169,138 @@ public:
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
+	int method;
+	int diffLevel;
+
+	private:
+		void changeCellValue(int x, int y){
+
+		}
+
+		void displayTime(string time){
+
+		}
+
+		void displayOperations(string operations){
+
+		}
+
+	public slots:
+		//Klikniecie przycisku OK
+		void okButtonClicked(){
+
+		}
+		//zaznaczenie sasiadow
+		void mostNeighboursSelected(){
+			method = 0;
+		}
+		//zaznaczenie losowosci
+		void randomSelected(){
+			method = 1;
+		}
+		//wybor z listy poziomow trudnosci
+		void setDifficultyLevel(int level){
+			diffLevel=level+1;//wydaje mi sie ze indeksowanie od 0
+		}
 
     void setupUi(QMainWindow *SudokuGUIClass)
     {
+		method = 0;
+		diffLevel=0;
         if (SudokuGUIClass->objectName().isEmpty())
             SudokuGUIClass->setObjectName(QStringLiteral("SudokuGUIClass"));
-        SudokuGUIClass->resize(668, 445);
+        SudokuGUIClass->resize(670, 451);
         centralWidget = new QWidget(SudokuGUIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
+        centralWidget->setSizePolicy(sizePolicy);
+        centralWidget->setMinimumSize(QSize(670, 386));
+        centralWidget->setMaximumSize(QSize(670, 386));
+
         okButton = new QPushButton(centralWidget);
         okButton->setObjectName(QStringLiteral("okButton"));
         okButton->setGeometry(QRect(530, 250, 93, 20));
         okButton->setMaximumSize(QSize(100, 20));
+        okButton->setCursor(QCursor(Qt::OpenHandCursor));
+		QObject::connect(okButton, SIGNAL(clicked()),centralWidget,SLOT(okButtonClicked()));
+
+		QStringList levelsList=(QStringList()<<"Ekstremalnie latwy"<<"Latwy"<<"Sredni"<<"Trudny"<<"Piekielnie trudny");
+
         DifficultyLevelSelector = new QComboBox(centralWidget);
         DifficultyLevelSelector->setObjectName(QStringLiteral("DifficultyLevelSelector"));
         DifficultyLevelSelector->setGeometry(QRect(500, 170, 150, 20));
         DifficultyLevelSelector->setMinimumSize(QSize(150, 0));
         DifficultyLevelSelector->setMaximumSize(QSize(200, 20));
+		DifficultyLevelSelector->addItems(levelsList);
+		QObject::connect(DifficultyLevelSelector, SIGNAL(currentIndexChanged(int)),centralWidget,SLOT(setDifficultyLevel(int)));
+
         TimeField = new QLineEdit(centralWidget);
         TimeField->setObjectName(QStringLiteral("TimeField"));
         TimeField->setGeometry(QRect(500, 301, 137, 22));
         TimeField->setInputMethodHints(Qt::ImhDigitsOnly);
+		TimeField->setReadOnly(true);
+
         DifficultyLevelLabel = new QLabel(centralWidget);
         DifficultyLevelLabel->setObjectName(QStringLiteral("DifficultyLevelLabel"));
         DifficultyLevelLabel->setGeometry(QRect(490, 150, 111, 16));
+
         RepetitionField = new QLineEdit(centralWidget);
         RepetitionField->setObjectName(QStringLiteral("RepetitionField"));
         RepetitionField->setGeometry(QRect(500, 223, 137, 22));
         RepetitionField->setInputMethodHints(Qt::ImhDigitsOnly);
+
         OperationsField = new QLineEdit(centralWidget);
         OperationsField->setObjectName(QStringLiteral("OperationsField"));
         OperationsField->setGeometry(QRect(500, 353, 137, 22));
         OperationsField->setInputMethodHints(Qt::ImhDigitsOnly);
+		OperationsField->setReadOnly(true);
+
         MethodGroup = new QGroupBox(centralWidget);
         MethodGroup->setObjectName(QStringLiteral("MethodGroup"));
         MethodGroup->setGeometry(QRect(499, 32, 141, 100));
         MethodGroup->setMaximumSize(QSize(160, 100));
+
         layoutWidget_3 = new QWidget(MethodGroup);
         layoutWidget_3->setObjectName(QStringLiteral("layoutWidget_3"));
-        layoutWidget_3->setGeometry(QRect(20, 20, 125, 76));
+        layoutWidget_3->setGeometry(QRect(10, 20, 125, 76));
+
         MethodLayout = new QVBoxLayout(layoutWidget_3);
         MethodLayout->setSpacing(6);
         MethodLayout->setContentsMargins(11, 11, 11, 11);
         MethodLayout->setObjectName(QStringLiteral("MethodLayout"));
         MethodLayout->setContentsMargins(0, 0, 0, 0);
+
         MostNeighboursButton = new QRadioButton(layoutWidget_3);
         MostNeighboursButton->setObjectName(QStringLiteral("MostNeighboursButton"));
         MostNeighboursButton->setChecked(true);
-
+		QObject::connect(MostNeighboursButton, SIGNAL(clicked()), MethodGroup,SLOT(mostNeighboursSelected()));
         MethodLayout->addWidget(MostNeighboursButton);
 
         RandomButtom = new QRadioButton(layoutWidget_3);
         RandomButtom->setObjectName(QStringLiteral("RandomButtom"));
-
+		QObject::connect(RandomButtom, SIGNAL(clicked()),MethodGroup,SLOT(randomSelected()));
         MethodLayout->addWidget(RandomButtom);
 
         layoutWidget_4 = new QWidget(centralWidget);
         layoutWidget_4->setObjectName(QStringLiteral("layoutWidget_4"));
         layoutWidget_4->setGeometry(QRect(0, 10, 481, 371));
+
         SudokuGridMainVerticalLayout = new QVBoxLayout(layoutWidget_4);
         SudokuGridMainVerticalLayout->setSpacing(6);
         SudokuGridMainVerticalLayout->setContentsMargins(11, 11, 11, 11);
         SudokuGridMainVerticalLayout->setObjectName(QStringLiteral("SudokuGridMainVerticalLayout"));
         SudokuGridMainVerticalLayout->setContentsMargins(0, 0, 0, 0);
+
         SudokuGridHorizontalLayer1 = new QHBoxLayout();
         SudokuGridHorizontalLayer1->setSpacing(6);
         SudokuGridHorizontalLayer1->setObjectName(QStringLiteral("SudokuGridHorizontalLayer1"));
+
         Cell1VLayer1 = new QLineEdit(layoutWidget_4);
         Cell1VLayer1->setObjectName(QStringLiteral("Cell1VLayer1"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
+        Cell1VLayer1->setEnabled(true);
         sizePolicy.setHeightForWidth(Cell1VLayer1->sizePolicy().hasHeightForWidth());
         Cell1VLayer1->setSizePolicy(sizePolicy);
         Cell1VLayer1->setMinimumSize(QSize(25, 30));
@@ -251,11 +314,13 @@ public:
         Cell1VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer1->setMaxLength(1);
         Cell1VLayer1->setAlignment(Qt::AlignCenter);
+        Cell1VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell1VLayer1);
 
         Cell2VLayer1 = new QLineEdit(layoutWidget_4);
         Cell2VLayer1->setObjectName(QStringLiteral("Cell2VLayer1"));
+        Cell2VLayer1->setEnabled(true);
         sizePolicy.setHeightForWidth(Cell2VLayer1->sizePolicy().hasHeightForWidth());
         Cell2VLayer1->setSizePolicy(sizePolicy);
         Cell2VLayer1->setMinimumSize(QSize(25, 30));
@@ -264,11 +329,13 @@ public:
         Cell2VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer1->setMaxLength(1);
         Cell2VLayer1->setAlignment(Qt::AlignCenter);
+        Cell2VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell2VLayer1);
 
         Cell3VLayer1 = new QLineEdit(layoutWidget_4);
         Cell3VLayer1->setObjectName(QStringLiteral("Cell3VLayer1"));
+        Cell3VLayer1->setEnabled(true);
         sizePolicy.setHeightForWidth(Cell3VLayer1->sizePolicy().hasHeightForWidth());
         Cell3VLayer1->setSizePolicy(sizePolicy);
         Cell3VLayer1->setMinimumSize(QSize(25, 30));
@@ -277,6 +344,7 @@ public:
         Cell3VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer1->setMaxLength(1);
         Cell3VLayer1->setAlignment(Qt::AlignCenter);
+        Cell3VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell3VLayer1);
 
@@ -286,6 +354,7 @@ public:
 
         Cell4VLayer1 = new QLineEdit(layoutWidget_4);
         Cell4VLayer1->setObjectName(QStringLiteral("Cell4VLayer1"));
+        Cell4VLayer1->setEnabled(true);
         sizePolicy.setHeightForWidth(Cell4VLayer1->sizePolicy().hasHeightForWidth());
         Cell4VLayer1->setSizePolicy(sizePolicy);
         Cell4VLayer1->setMinimumSize(QSize(25, 30));
@@ -294,6 +363,7 @@ public:
         Cell4VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer1->setMaxLength(1);
         Cell4VLayer1->setAlignment(Qt::AlignCenter);
+        Cell4VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell4VLayer1);
 
@@ -307,6 +377,7 @@ public:
         Cell5VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer1->setMaxLength(1);
         Cell5VLayer1->setAlignment(Qt::AlignCenter);
+        Cell5VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell5VLayer1);
 
@@ -320,6 +391,7 @@ public:
         Cell6VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer1->setMaxLength(1);
         Cell6VLayer1->setAlignment(Qt::AlignCenter);
+        Cell6VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell6VLayer1);
 
@@ -337,6 +409,7 @@ public:
         Cell7VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer1->setMaxLength(1);
         Cell7VLayer1->setAlignment(Qt::AlignCenter);
+        Cell7VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell7VLayer1);
 
@@ -350,6 +423,7 @@ public:
         Cell8VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer1->setMaxLength(1);
         Cell8VLayer1->setAlignment(Qt::AlignCenter);
+        Cell8VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell8VLayer1);
 
@@ -363,6 +437,7 @@ public:
         Cell9VLayer1->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer1->setMaxLength(1);
         Cell9VLayer1->setAlignment(Qt::AlignCenter);
+        Cell9VLayer1->setReadOnly(true);
 
         SudokuGridHorizontalLayer1->addWidget(Cell9VLayer1);
 
@@ -382,6 +457,7 @@ public:
         Cell1VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer2->setMaxLength(1);
         Cell1VLayer2->setAlignment(Qt::AlignCenter);
+        Cell1VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell1VLayer2);
 
@@ -395,6 +471,7 @@ public:
         Cell2VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer2->setMaxLength(1);
         Cell2VLayer2->setAlignment(Qt::AlignCenter);
+        Cell2VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell2VLayer2);
 
@@ -408,6 +485,7 @@ public:
         Cell3VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer2->setMaxLength(1);
         Cell3VLayer2->setAlignment(Qt::AlignCenter);
+        Cell3VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell3VLayer2);
 
@@ -425,6 +503,7 @@ public:
         Cell4VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer2->setMaxLength(1);
         Cell4VLayer2->setAlignment(Qt::AlignCenter);
+        Cell4VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell4VLayer2);
 
@@ -438,6 +517,7 @@ public:
         Cell5VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer2->setMaxLength(1);
         Cell5VLayer2->setAlignment(Qt::AlignCenter);
+        Cell5VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell5VLayer2);
 
@@ -451,6 +531,7 @@ public:
         Cell6VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer2->setMaxLength(1);
         Cell6VLayer2->setAlignment(Qt::AlignCenter);
+        Cell6VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell6VLayer2);
 
@@ -468,6 +549,7 @@ public:
         Cell7VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer2->setMaxLength(1);
         Cell7VLayer2->setAlignment(Qt::AlignCenter);
+        Cell7VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell7VLayer2);
 
@@ -481,6 +563,7 @@ public:
         Cell8VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer2->setMaxLength(1);
         Cell8VLayer2->setAlignment(Qt::AlignCenter);
+        Cell8VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell8VLayer2);
 
@@ -494,6 +577,7 @@ public:
         Cell9VLayer2->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer2->setMaxLength(1);
         Cell9VLayer2->setAlignment(Qt::AlignCenter);
+        Cell9VLayer2->setReadOnly(true);
 
         SudokuGridHorizontalLayer2->addWidget(Cell9VLayer2);
 
@@ -513,6 +597,7 @@ public:
         Cell1VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer3->setMaxLength(1);
         Cell1VLayer3->setAlignment(Qt::AlignCenter);
+        Cell1VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell1VLayer3);
 
@@ -526,6 +611,7 @@ public:
         Cell2VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer3->setMaxLength(1);
         Cell2VLayer3->setAlignment(Qt::AlignCenter);
+        Cell2VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell2VLayer3);
 
@@ -539,6 +625,7 @@ public:
         Cell3VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer3->setMaxLength(1);
         Cell3VLayer3->setAlignment(Qt::AlignCenter);
+        Cell3VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell3VLayer3);
 
@@ -556,6 +643,7 @@ public:
         Cell4VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer3->setMaxLength(1);
         Cell4VLayer3->setAlignment(Qt::AlignCenter);
+        Cell4VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell4VLayer3);
 
@@ -569,6 +657,7 @@ public:
         Cell5VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer3->setMaxLength(1);
         Cell5VLayer3->setAlignment(Qt::AlignCenter);
+        Cell5VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell5VLayer3);
 
@@ -582,6 +671,7 @@ public:
         Cell6VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer3->setMaxLength(1);
         Cell6VLayer3->setAlignment(Qt::AlignCenter);
+        Cell6VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell6VLayer3);
 
@@ -599,6 +689,7 @@ public:
         Cell7VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer3->setMaxLength(1);
         Cell7VLayer3->setAlignment(Qt::AlignCenter);
+        Cell7VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell7VLayer3);
 
@@ -612,6 +703,7 @@ public:
         Cell8VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer3->setMaxLength(1);
         Cell8VLayer3->setAlignment(Qt::AlignCenter);
+        Cell8VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell8VLayer3);
 
@@ -625,6 +717,7 @@ public:
         Cell9VLayer3->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer3->setMaxLength(1);
         Cell9VLayer3->setAlignment(Qt::AlignCenter);
+        Cell9VLayer3->setReadOnly(true);
 
         SudokuGridHorizontalLayer3->addWidget(Cell9VLayer3);
 
@@ -644,6 +737,7 @@ public:
         Cell1VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer4->setMaxLength(1);
         Cell1VLayer4->setAlignment(Qt::AlignCenter);
+        Cell1VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell1VLayer4);
 
@@ -657,6 +751,7 @@ public:
         Cell2VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer4->setMaxLength(1);
         Cell2VLayer4->setAlignment(Qt::AlignCenter);
+        Cell2VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell2VLayer4);
 
@@ -670,6 +765,7 @@ public:
         Cell3VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer4->setMaxLength(1);
         Cell3VLayer4->setAlignment(Qt::AlignCenter);
+        Cell3VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell3VLayer4);
 
@@ -687,6 +783,7 @@ public:
         Cell4VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer4->setMaxLength(1);
         Cell4VLayer4->setAlignment(Qt::AlignCenter);
+        Cell4VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell4VLayer4);
 
@@ -700,6 +797,7 @@ public:
         Cell5VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer4->setMaxLength(1);
         Cell5VLayer4->setAlignment(Qt::AlignCenter);
+        Cell5VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell5VLayer4);
 
@@ -713,6 +811,7 @@ public:
         Cell6VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer4->setMaxLength(1);
         Cell6VLayer4->setAlignment(Qt::AlignCenter);
+        Cell6VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell6VLayer4);
 
@@ -730,6 +829,7 @@ public:
         Cell7VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer4->setMaxLength(1);
         Cell7VLayer4->setAlignment(Qt::AlignCenter);
+        Cell7VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell7VLayer4);
 
@@ -743,6 +843,7 @@ public:
         Cell8VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer4->setMaxLength(1);
         Cell8VLayer4->setAlignment(Qt::AlignCenter);
+        Cell8VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell8VLayer4);
 
@@ -756,6 +857,7 @@ public:
         Cell9VLayer4->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer4->setMaxLength(1);
         Cell9VLayer4->setAlignment(Qt::AlignCenter);
+        Cell9VLayer4->setReadOnly(true);
 
         SudokuGridHorizontalLayer4->addWidget(Cell9VLayer4);
 
@@ -775,6 +877,7 @@ public:
         Cell1VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer5->setMaxLength(1);
         Cell1VLayer5->setAlignment(Qt::AlignCenter);
+        Cell1VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell1VLayer5);
 
@@ -788,6 +891,7 @@ public:
         Cell2VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer5->setMaxLength(1);
         Cell2VLayer5->setAlignment(Qt::AlignCenter);
+        Cell2VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell2VLayer5);
 
@@ -801,6 +905,7 @@ public:
         Cell3VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer5->setMaxLength(1);
         Cell3VLayer5->setAlignment(Qt::AlignCenter);
+        Cell3VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell3VLayer5);
 
@@ -818,6 +923,7 @@ public:
         Cell4VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer5->setMaxLength(1);
         Cell4VLayer5->setAlignment(Qt::AlignCenter);
+        Cell4VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell4VLayer5);
 
@@ -831,6 +937,7 @@ public:
         Cell5VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer5->setMaxLength(1);
         Cell5VLayer5->setAlignment(Qt::AlignCenter);
+        Cell5VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell5VLayer5);
 
@@ -844,6 +951,7 @@ public:
         Cell6VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer5->setMaxLength(1);
         Cell6VLayer5->setAlignment(Qt::AlignCenter);
+        Cell6VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell6VLayer5);
 
@@ -861,6 +969,7 @@ public:
         Cell7VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer5->setMaxLength(1);
         Cell7VLayer5->setAlignment(Qt::AlignCenter);
+        Cell7VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell7VLayer5);
 
@@ -874,6 +983,7 @@ public:
         Cell8VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer5->setMaxLength(1);
         Cell8VLayer5->setAlignment(Qt::AlignCenter);
+        Cell8VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell8VLayer5);
 
@@ -887,6 +997,7 @@ public:
         Cell9VLayer5->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer5->setMaxLength(1);
         Cell9VLayer5->setAlignment(Qt::AlignCenter);
+        Cell9VLayer5->setReadOnly(true);
 
         SudokuGridHorizontalLayer5->addWidget(Cell9VLayer5);
 
@@ -906,6 +1017,7 @@ public:
         Cell1VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer6->setMaxLength(1);
         Cell1VLayer6->setAlignment(Qt::AlignCenter);
+        Cell1VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell1VLayer6);
 
@@ -919,6 +1031,7 @@ public:
         Cell2VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer6->setMaxLength(1);
         Cell2VLayer6->setAlignment(Qt::AlignCenter);
+        Cell2VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell2VLayer6);
 
@@ -932,6 +1045,7 @@ public:
         Cell3VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer6->setMaxLength(1);
         Cell3VLayer6->setAlignment(Qt::AlignCenter);
+        Cell3VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell3VLayer6);
 
@@ -949,6 +1063,7 @@ public:
         Cell4VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer6->setMaxLength(1);
         Cell4VLayer6->setAlignment(Qt::AlignCenter);
+        Cell4VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell4VLayer6);
 
@@ -962,6 +1077,7 @@ public:
         Cell5VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer6->setMaxLength(1);
         Cell5VLayer6->setAlignment(Qt::AlignCenter);
+        Cell5VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell5VLayer6);
 
@@ -975,6 +1091,7 @@ public:
         Cell6VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer6->setMaxLength(1);
         Cell6VLayer6->setAlignment(Qt::AlignCenter);
+        Cell6VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell6VLayer6);
 
@@ -992,6 +1109,7 @@ public:
         Cell7VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer6->setMaxLength(1);
         Cell7VLayer6->setAlignment(Qt::AlignCenter);
+        Cell7VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell7VLayer6);
 
@@ -1005,6 +1123,7 @@ public:
         Cell8VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer6->setMaxLength(1);
         Cell8VLayer6->setAlignment(Qt::AlignCenter);
+        Cell8VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell8VLayer6);
 
@@ -1018,6 +1137,7 @@ public:
         Cell9VLayer6->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer6->setMaxLength(1);
         Cell9VLayer6->setAlignment(Qt::AlignCenter);
+        Cell9VLayer6->setReadOnly(true);
 
         SudokuGridHorizontalLayer6->addWidget(Cell9VLayer6);
 
@@ -1037,6 +1157,7 @@ public:
         Cell1VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer7->setMaxLength(1);
         Cell1VLayer7->setAlignment(Qt::AlignCenter);
+        Cell1VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell1VLayer7);
 
@@ -1050,6 +1171,7 @@ public:
         Cell2VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer7->setMaxLength(1);
         Cell2VLayer7->setAlignment(Qt::AlignCenter);
+        Cell2VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell2VLayer7);
 
@@ -1063,6 +1185,7 @@ public:
         Cell3VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer7->setMaxLength(1);
         Cell3VLayer7->setAlignment(Qt::AlignCenter);
+        Cell3VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell3VLayer7);
 
@@ -1080,6 +1203,7 @@ public:
         Cell4VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer7->setMaxLength(1);
         Cell4VLayer7->setAlignment(Qt::AlignCenter);
+        Cell4VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell4VLayer7);
 
@@ -1093,6 +1217,7 @@ public:
         Cell5VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer7->setMaxLength(1);
         Cell5VLayer7->setAlignment(Qt::AlignCenter);
+        Cell5VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell5VLayer7);
 
@@ -1106,6 +1231,7 @@ public:
         Cell6VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer7->setMaxLength(1);
         Cell6VLayer7->setAlignment(Qt::AlignCenter);
+        Cell6VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell6VLayer7);
 
@@ -1123,6 +1249,7 @@ public:
         Cell7VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer7->setMaxLength(1);
         Cell7VLayer7->setAlignment(Qt::AlignCenter);
+        Cell7VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell7VLayer7);
 
@@ -1136,6 +1263,7 @@ public:
         Cell8VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer7->setMaxLength(1);
         Cell8VLayer7->setAlignment(Qt::AlignCenter);
+        Cell8VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell8VLayer7);
 
@@ -1149,6 +1277,7 @@ public:
         Cell9VLayer7->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer7->setMaxLength(1);
         Cell9VLayer7->setAlignment(Qt::AlignCenter);
+        Cell9VLayer7->setReadOnly(true);
 
         SudokuGridHorizontalLayer7->addWidget(Cell9VLayer7);
 
@@ -1168,6 +1297,7 @@ public:
         Cell1VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer8->setMaxLength(1);
         Cell1VLayer8->setAlignment(Qt::AlignCenter);
+        Cell1VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell1VLayer8);
 
@@ -1181,6 +1311,7 @@ public:
         Cell2VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer8->setMaxLength(1);
         Cell2VLayer8->setAlignment(Qt::AlignCenter);
+        Cell2VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell2VLayer8);
 
@@ -1194,6 +1325,7 @@ public:
         Cell3VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer8->setMaxLength(1);
         Cell3VLayer8->setAlignment(Qt::AlignCenter);
+        Cell3VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell3VLayer8);
 
@@ -1211,6 +1343,7 @@ public:
         Cell4VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer8->setMaxLength(1);
         Cell4VLayer8->setAlignment(Qt::AlignCenter);
+        Cell4VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell4VLayer8);
 
@@ -1224,6 +1357,7 @@ public:
         Cell5VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer8->setMaxLength(1);
         Cell5VLayer8->setAlignment(Qt::AlignCenter);
+        Cell5VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell5VLayer8);
 
@@ -1237,6 +1371,7 @@ public:
         Cell6VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer8->setMaxLength(1);
         Cell6VLayer8->setAlignment(Qt::AlignCenter);
+        Cell6VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell6VLayer8);
 
@@ -1254,6 +1389,7 @@ public:
         Cell7VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer8->setMaxLength(1);
         Cell7VLayer8->setAlignment(Qt::AlignCenter);
+        Cell7VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell7VLayer8);
 
@@ -1267,6 +1403,7 @@ public:
         Cell8VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer8->setMaxLength(1);
         Cell8VLayer8->setAlignment(Qt::AlignCenter);
+        Cell8VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell8VLayer8);
 
@@ -1280,6 +1417,7 @@ public:
         Cell9VLayer8->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer8->setMaxLength(1);
         Cell9VLayer8->setAlignment(Qt::AlignCenter);
+        Cell9VLayer8->setReadOnly(true);
 
         SudokuGridHorizontalLayer8->addWidget(Cell9VLayer8);
 
@@ -1299,6 +1437,7 @@ public:
         Cell1VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell1VLayer9->setMaxLength(1);
         Cell1VLayer9->setAlignment(Qt::AlignCenter);
+        Cell1VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell1VLayer9);
 
@@ -1312,6 +1451,7 @@ public:
         Cell2VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell2VLayer9->setMaxLength(1);
         Cell2VLayer9->setAlignment(Qt::AlignCenter);
+        Cell2VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell2VLayer9);
 
@@ -1325,6 +1465,7 @@ public:
         Cell3VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell3VLayer9->setMaxLength(1);
         Cell3VLayer9->setAlignment(Qt::AlignCenter);
+        Cell3VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell3VLayer9);
 
@@ -1342,6 +1483,7 @@ public:
         Cell4VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell4VLayer9->setMaxLength(1);
         Cell4VLayer9->setAlignment(Qt::AlignCenter);
+        Cell4VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell4VLayer9);
 
@@ -1355,6 +1497,7 @@ public:
         Cell5VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell5VLayer9->setMaxLength(1);
         Cell5VLayer9->setAlignment(Qt::AlignCenter);
+        Cell5VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell5VLayer9);
 
@@ -1368,6 +1511,7 @@ public:
         Cell6VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell6VLayer9->setMaxLength(1);
         Cell6VLayer9->setAlignment(Qt::AlignCenter);
+        Cell6VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell6VLayer9);
 
@@ -1385,6 +1529,7 @@ public:
         Cell7VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell7VLayer9->setMaxLength(1);
         Cell7VLayer9->setAlignment(Qt::AlignCenter);
+        Cell7VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell7VLayer9);
 
@@ -1398,6 +1543,7 @@ public:
         Cell8VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell8VLayer9->setMaxLength(1);
         Cell8VLayer9->setAlignment(Qt::AlignCenter);
+        Cell8VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell8VLayer9);
 
@@ -1411,6 +1557,7 @@ public:
         Cell9VLayer9->setInputMethodHints(Qt::ImhDigitsOnly);
         Cell9VLayer9->setMaxLength(1);
         Cell9VLayer9->setAlignment(Qt::AlignCenter);
+        Cell9VLayer9->setReadOnly(true);
 
         SudokuGridHorizontalLayer9->addWidget(Cell9VLayer9);
 
@@ -1449,13 +1596,15 @@ public:
         SudokuGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(SudokuGUIClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 668, 26));
+        menuBar->setGeometry(QRect(0, 0, 670, 26));
         SudokuGUIClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(SudokuGUIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         SudokuGUIClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(SudokuGUIClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setMinimumSize(QSize(670, 18));
+        statusBar->setMaximumSize(QSize(670, 18));
         SudokuGUIClass->setStatusBar(statusBar);
 
         retranslateUi(SudokuGUIClass);
