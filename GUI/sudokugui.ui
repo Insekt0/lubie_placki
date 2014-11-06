@@ -204,7 +204,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer1">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer1">
+        <widget class="QLineEdit" name="cell1">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -252,7 +252,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer1">
+        <widget class="QLineEdit" name="cell2">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -300,7 +300,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer1">
+        <widget class="QLineEdit" name="cell3">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -364,7 +364,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer1">
+        <widget class="QLineEdit" name="cell4">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -412,7 +412,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer1">
+        <widget class="QLineEdit" name="cell5">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -457,7 +457,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer1">
+        <widget class="QLineEdit" name="cell6">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -518,7 +518,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer1">
+        <widget class="QLineEdit" name="cell7">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -563,7 +563,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer1">
+        <widget class="QLineEdit" name="cell8">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -608,7 +608,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer1">
+        <widget class="QLineEdit" name="cell9">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -657,7 +657,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer2">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer2">
+        <widget class="QLineEdit" name="cell10">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -702,7 +702,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer2">
+        <widget class="QLineEdit" name="cell11">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -747,7 +747,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer2">
+        <widget class="QLineEdit" name="cell12">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -808,7 +808,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer2">
+        <widget class="QLineEdit" name="cell13">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -853,7 +853,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer2">
+        <widget class="QLineEdit" name="cell14">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -898,7 +898,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer2">
+        <widget class="QLineEdit" name="cell15">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -959,7 +959,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer2">
+        <widget class="QLineEdit" name="cell16">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1004,7 +1004,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer2">
+        <widget class="QLineEdit" name="cell17">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1049,7 +1049,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer2">
+        <widget class="QLineEdit" name="cell18">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1098,7 +1098,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer3">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer3">
+        <widget class="QLineEdit" name="cell19">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1143,7 +1143,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer3">
+        <widget class="QLineEdit" name="cell20">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1188,7 +1188,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer3">
+        <widget class="QLineEdit" name="cell21">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1249,7 +1249,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer3">
+        <widget class="QLineEdit" name="cell22">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1294,7 +1294,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer3">
+        <widget class="QLineEdit" name="cell23">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1339,7 +1339,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer3">
+        <widget class="QLineEdit" name="cell24">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1400,7 +1400,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer3">
+        <widget class="QLineEdit" name="cell25">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1445,7 +1445,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer3">
+        <widget class="QLineEdit" name="cell26">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1490,7 +1490,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer3">
+        <widget class="QLineEdit" name="cell27">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1539,7 +1539,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer4">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer4">
+        <widget class="QLineEdit" name="cell28">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1584,7 +1584,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer4">
+        <widget class="QLineEdit" name="cell29">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1629,7 +1629,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer4">
+        <widget class="QLineEdit" name="cell30">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1690,7 +1690,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer4">
+        <widget class="QLineEdit" name="cell31">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1735,7 +1735,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer4">
+        <widget class="QLineEdit" name="cell32">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1780,7 +1780,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer4">
+        <widget class="QLineEdit" name="cell33">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1841,7 +1841,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer4">
+        <widget class="QLineEdit" name="cell34">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1886,7 +1886,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer4">
+        <widget class="QLineEdit" name="cell35">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1931,7 +1931,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer4">
+        <widget class="QLineEdit" name="cell36">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1980,7 +1980,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer5">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer5">
+        <widget class="QLineEdit" name="cell37">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2025,7 +2025,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer5">
+        <widget class="QLineEdit" name="cell38">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2070,7 +2070,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer5">
+        <widget class="QLineEdit" name="cell39">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2131,7 +2131,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer5">
+        <widget class="QLineEdit" name="cell40">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2176,7 +2176,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer5">
+        <widget class="QLineEdit" name="cell41">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2221,7 +2221,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer5">
+        <widget class="QLineEdit" name="cell42">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2282,7 +2282,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer5">
+        <widget class="QLineEdit" name="cell43">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2327,7 +2327,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer5">
+        <widget class="QLineEdit" name="cell44">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2372,7 +2372,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer5">
+        <widget class="QLineEdit" name="cell45">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2421,7 +2421,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer6">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer6">
+        <widget class="QLineEdit" name="cell46">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2466,7 +2466,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer6">
+        <widget class="QLineEdit" name="cell47">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2511,7 +2511,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer6">
+        <widget class="QLineEdit" name="cell48">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2572,7 +2572,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer6">
+        <widget class="QLineEdit" name="cell49">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2617,7 +2617,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer6">
+        <widget class="QLineEdit" name="cell50">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2662,7 +2662,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer6">
+        <widget class="QLineEdit" name="cell51">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2723,7 +2723,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer6">
+        <widget class="QLineEdit" name="cell52">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2768,7 +2768,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer6">
+        <widget class="QLineEdit" name="cell53">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2813,7 +2813,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer6">
+        <widget class="QLineEdit" name="cell54">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2862,7 +2862,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer7">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer7">
+        <widget class="QLineEdit" name="cell55">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2907,7 +2907,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer7">
+        <widget class="QLineEdit" name="cell56">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -2952,7 +2952,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer7">
+        <widget class="QLineEdit" name="cell57">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3013,7 +3013,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer7">
+        <widget class="QLineEdit" name="cell58">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3058,7 +3058,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer7">
+        <widget class="QLineEdit" name="cell59">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3103,7 +3103,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer7">
+        <widget class="QLineEdit" name="cell60">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3164,7 +3164,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer7">
+        <widget class="QLineEdit" name="cell61">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3209,7 +3209,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer7">
+        <widget class="QLineEdit" name="cell62">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3254,7 +3254,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer7">
+        <widget class="QLineEdit" name="cell63">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3303,7 +3303,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer8">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer8">
+        <widget class="QLineEdit" name="cell64">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3348,7 +3348,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer8">
+        <widget class="QLineEdit" name="cell65">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3393,7 +3393,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer8">
+        <widget class="QLineEdit" name="cell66">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3454,7 +3454,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer8">
+        <widget class="QLineEdit" name="cell67">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3499,7 +3499,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer8">
+        <widget class="QLineEdit" name="cell68">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3544,7 +3544,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer8">
+        <widget class="QLineEdit" name="cell69">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3605,7 +3605,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer8">
+        <widget class="QLineEdit" name="cell70">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3650,7 +3650,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer8">
+        <widget class="QLineEdit" name="cell71">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3695,7 +3695,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer8">
+        <widget class="QLineEdit" name="cell72">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3744,7 +3744,7 @@
      <item>
       <layout class="QHBoxLayout" name="SudokuGridHorizontalLayer9">
        <item>
-        <widget class="QLineEdit" name="Cell1VLayer9">
+        <widget class="QLineEdit" name="cell73">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3789,7 +3789,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell2VLayer9">
+        <widget class="QLineEdit" name="cell74">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3834,7 +3834,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell3VLayer9">
+        <widget class="QLineEdit" name="cell75">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3895,7 +3895,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell4VLayer9">
+        <widget class="QLineEdit" name="cell76">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3940,7 +3940,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell5VLayer9">
+        <widget class="QLineEdit" name="cell77">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3985,7 +3985,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell6VLayer9">
+        <widget class="QLineEdit" name="cell78">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -4046,7 +4046,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell7VLayer9">
+        <widget class="QLineEdit" name="cell79">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -4091,7 +4091,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell8VLayer9">
+        <widget class="QLineEdit" name="cell80">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -4136,7 +4136,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Cell9VLayer9">
+        <widget class="QLineEdit" name="cell81">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
