@@ -6,9 +6,12 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
+
 #ifndef UI_SUDOKUGUI_H
 #define UI_SUDOKUGUI_H
 
+#include "SudokuGenerator.h"
+#include "SudokuSolver.h"
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -30,6 +33,9 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <stdio.h>
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include <iostream>
 
 QT_BEGIN_NAMESPACE
@@ -170,12 +176,93 @@ public:
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 	int method;
-	int diffLevel;
+	COMPLEXITY_LEVELS level;
 	int repetitions;
 
 	private:
-		void changeCellsValue(int table[]){
+		void changeCellsValue(int* table){
 			//pewnie bedzie sie przekazywac tablice z wynikiem i tablice wygenerowana i od tego uzalezniac kolor
+			cell1->setText(QString::number(table[0]));
+			cell2->setText(QString::number(table[1]));
+			cell3->setText(QString::number(table[2]));
+			cell4->setText(QString::number(table[3]));
+			cell5->setText(QString::number(table[4]));
+			cell6->setText(QString::number(table[5]));
+			cell7->setText(QString::number(table[6]));
+			cell8->setText(QString::number(table[7]));
+			cell9->setText(QString::number(table[8]));
+			cell10->setText(QString::number(table[9]));
+			cell11->setText(QString::number(table[10]));
+			cell12->setText(QString::number(table[11]));
+			cell13->setText(QString::number(table[12]));
+			cell14->setText(QString::number(table[13]));
+			cell15->setText(QString::number(table[14]));
+			cell16->setText(QString::number(table[15]));
+			cell17->setText(QString::number(table[16]));
+			cell18->setText(QString::number(table[17]));
+			cell19->setText(QString::number(table[18]));
+			cell20->setText(QString::number(table[19]));
+			cell21->setText(QString::number(table[20]));
+			cell22->setText(QString::number(table[21]));
+			cell23->setText(QString::number(table[22]));
+			cell24->setText(QString::number(table[23]));
+			cell25->setText(QString::number(table[24]));
+			cell26->setText(QString::number(table[25]));
+			cell27->setText(QString::number(table[26]));
+			cell28->setText(QString::number(table[27]));
+			cell29->setText(QString::number(table[28]));
+			cell30->setText(QString::number(table[29]));
+			cell31->setText(QString::number(table[30]));
+			cell32->setText(QString::number(table[31]));
+			cell33->setText(QString::number(table[32]));
+			cell34->setText(QString::number(table[33]));
+			cell35->setText(QString::number(table[34]));
+			cell36->setText(QString::number(table[35]));
+			cell37->setText(QString::number(table[36]));
+			cell38->setText(QString::number(table[37]));
+			cell39->setText(QString::number(table[38]));
+			cell40->setText(QString::number(table[39]));
+			cell41->setText(QString::number(table[40]));
+			cell42->setText(QString::number(table[41]));
+			cell43->setText(QString::number(table[42]));
+			cell44->setText(QString::number(table[43]));
+			cell45->setText(QString::number(table[44]));
+			cell46->setText(QString::number(table[45]));
+			cell47->setText(QString::number(table[46]));
+			cell48->setText(QString::number(table[47]));
+			cell49->setText(QString::number(table[48]));
+			cell50->setText(QString::number(table[49]));
+			cell51->setText(QString::number(table[50]));
+			cell52->setText(QString::number(table[51]));
+			cell53->setText(QString::number(table[52]));
+			cell54->setText(QString::number(table[53]));
+			cell55->setText(QString::number(table[54]));
+			cell56->setText(QString::number(table[55]));
+			cell57->setText(QString::number(table[56]));
+			cell58->setText(QString::number(table[57]));
+			cell59->setText(QString::number(table[58]));
+			cell60->setText(QString::number(table[59]));
+			cell61->setText(QString::number(table[60]));
+			cell62->setText(QString::number(table[61]));
+			cell63->setText(QString::number(table[62]));
+			cell64->setText(QString::number(table[63]));
+			cell65->setText(QString::number(table[64]));
+			cell66->setText(QString::number(table[65]));
+			cell67->setText(QString::number(table[66]));
+			cell68->setText(QString::number(table[67]));
+			cell69->setText(QString::number(table[68]));
+			cell70->setText(QString::number(table[69]));
+			cell71->setText(QString::number(table[70]));
+			cell72->setText(QString::number(table[71]));
+			cell73->setText(QString::number(table[72]));
+			cell74->setText(QString::number(table[73]));
+			cell75->setText(QString::number(table[74]));
+			cell76->setText(QString::number(table[75]));
+			cell77->setText(QString::number(table[76]));
+			cell78->setText(QString::number(table[77]));
+			cell79->setText(QString::number(table[78]));
+			cell80->setText(QString::number(table[79]));
+			cell81->setText(QString::number(table[80]));
 		}
 
 		void displayTime(string time){
@@ -189,6 +276,12 @@ public:
 	public slots:
 		//Klikniecie przycisku OK
 		void okButtonClicked(){
+			srand(unsigned(time(0)));
+			int* sudokuArray = new int[81]();
+			SudokuGenerator generator;
+			generator.generate(sudokuArray, level);
+			changeCellsValue(sudokuArray);
+			delete[] sudokuArray;
 			//generacja, szukanie rozwiazania,itd
 		}
 		//zaznaczenie sasiadow
@@ -200,17 +293,18 @@ public:
 			method = 1;
 		}
 		//wybor z listy poziomow trudnosci
-		void setDifficultyLevel(int level){
-			diffLevel=level+1;//wydaje mi sie ze indeksowanie od 0
+		void setDifficultyLevel(int lvl){
+			//wydaje mi sie ze indeksowanie od 0
+			level = static_cast<COMPLEXITY_LEVELS>(lvl+1);
 		}
-		void setRepetitionCount(const QString &){
-
+		void setRepetitionCount(const QString & repCount){
+			repetitions=repCount.toInt();
 		}
 
     void setupUi(QMainWindow *SudokuGUIClass)
     {
 		method = 0;
-		diffLevel=0;
+		level = static_cast<COMPLEXITY_LEVELS>(1);
 		repetitions=0;
         if (SudokuGUIClass->objectName().isEmpty())
             SudokuGUIClass->setObjectName(QStringLiteral("SudokuGUIClass"));
