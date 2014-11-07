@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>670</width>
-    <height>444</height>
+    <height>483</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>670</width>
-    <height>444</height>
+    <height>460</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>670</width>
-    <height>444</height>
+    <height>483</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -41,28 +41,28 @@
    <property name="minimumSize">
     <size>
      <width>670</width>
-     <height>386</height>
+     <height>425</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>670</width>
-     <height>386</height>
+     <height>425</height>
     </size>
    </property>
    <widget class="QPushButton" name="generateButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>230</y>
+      <x>520</x>
+      <y>270</y>
       <width>93</width>
-      <height>20</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="maximumSize">
      <size>
       <width>100</width>
-      <height>20</height>
+      <height>30</height>
      </size>
     </property>
     <property name="cursor">
@@ -76,7 +76,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>150</y>
+      <y>130</y>
       <width>150</width>
       <height>20</height>
      </rect>
@@ -98,7 +98,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>311</y>
+      <y>351</y>
       <width>137</width>
       <height>22</height>
      </rect>
@@ -117,7 +117,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>130</y>
+      <y>110</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -130,7 +130,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>203</y>
+      <y>213</y>
       <width>137</width>
       <height>22</height>
      </rect>
@@ -146,7 +146,7 @@
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>363</y>
+      <y>403</y>
       <width>137</width>
       <height>22</height>
      </rect>
@@ -165,7 +165,7 @@
     <property name="geometry">
      <rect>
       <x>499</x>
-      <y>12</y>
+      <y>2</y>
       <width>141</width>
       <height>100</height>
      </rect>
@@ -177,7 +177,7 @@
      </size>
     </property>
     <property name="title">
-     <string>Sposób rozwiązania</string>
+     <string>Sposób rozwiązywania</string>
     </property>
     <widget class="QWidget" name="layoutWidget_3">
      <property name="geometry">
@@ -215,7 +215,7 @@
       <x>0</x>
       <y>10</y>
       <width>481</width>
-      <height>371</height>
+      <height>411</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="SudokuGridMainVerticalLayout">
@@ -4206,7 +4206,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>288</y>
+      <y>328</y>
       <width>104</width>
       <height>16</height>
      </rect>
@@ -4219,7 +4219,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>180</y>
+      <y>190</y>
       <width>104</width>
       <height>16</height>
      </rect>
@@ -4232,7 +4232,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>340</y>
+      <y>380</y>
       <width>104</width>
       <height>16</height>
      </rect>
@@ -4247,7 +4247,7 @@
       <x>150</x>
       <y>10</y>
       <width>21</width>
-      <height>371</height>
+      <height>411</height>
      </rect>
     </property>
     <property name="orientation">
@@ -4260,7 +4260,7 @@
       <x>310</x>
       <y>10</y>
       <width>21</width>
-      <height>371</height>
+      <height>411</height>
      </rect>
     </property>
     <property name="orientation">
@@ -4271,7 +4271,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>120</y>
+      <y>140</y>
       <width>481</width>
       <height>20</height>
      </rect>
@@ -4284,7 +4284,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>250</y>
+      <y>270</y>
       <width>481</width>
       <height>20</height>
      </rect>
@@ -4296,16 +4296,16 @@
    <widget class="QPushButton" name="solveButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>260</y>
+      <x>520</x>
+      <y>300</y>
       <width>93</width>
-      <height>20</height>
+      <height>25</height>
      </rect>
     </property>
     <property name="maximumSize">
      <size>
       <width>100</width>
-      <height>20</height>
+      <height>30</height>
      </size>
     </property>
     <property name="cursor">
@@ -4313,6 +4313,32 @@
     </property>
     <property name="text">
      <string>Rozwiąż</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="saveToFileCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>160</y>
+      <width>151</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Zapisz wyniki do pliku</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="loadButton">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>240</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wczytaj sudoku z pliku</string>
     </property>
    </widget>
   </widget>

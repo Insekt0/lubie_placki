@@ -5,7 +5,7 @@
 SudokuGUI::SudokuGUI(QWidget *parent)
     : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0)
 {
-    QStringList levelsList=(QStringList()<<"Ekstremalnie latwy"<<"Latwy"<<"Sredni"<<"Trudny"<<"Piekielnie trudny");
+    QStringList levelsList=(QStringList()<<"Ekstremalnie \305\202atwy"<<"\305\201atwy"<<"\305\232redni"<<"Trudny"<<"Piekielnie trudny");
     ui.setupUi(this);
     moveCellsIntoTable();
     ui.DifficultyLevelSelector->addItems(levelsList);
@@ -15,6 +15,8 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     QObject::connect(ui.RepetitionField, SIGNAL(textChanged(const QString &)),this, SLOT(setRepetitionCount(const QString &)));
     QObject::connect(ui.MostNeighboursButton, SIGNAL(clicked()), this,SLOT(mostNeighboursSelected()));
     QObject::connect(ui.RandomButtom, SIGNAL(clicked()),this,SLOT(randomSelected()));
+    QObject::connect(ui.loadButton, SIGNAL(clicked(bool)),this,SLOT(loadSudokuButtonClicked()));
+    QObject::connect(ui.saveToFileCheckbox, SIGNAL(toggled(bool)),this, SLOT(setSaveFlag(bool)));
     ui.OperationsField->setText("");
     ui.TimeField->setText("");
     for (int i = 0; i < 81; ++i)
@@ -55,6 +57,23 @@ void SudokuGUI::changeCellsValue(int* table, bool justAfterSolve){
     }
 }
 
+void SudokuGUI::loadSudokuButtonClicked(){
+    string filename = QFileDialog::getOpenFileName(this,tr("Otw\303\263rz plik z Sudoku"), ".", tr("Pliki tekstowe (*.txt)")).toStdString();
+    if(!filename.empty()){
+        ifstream myfile;
+        myfile.open(filename);
+        int value;
+        int counter = 0;
+        while(myfile >> value)
+            m_sudokuGeneratedArray[counter++] = value;
+        changeCellsValue(m_sudokuGeneratedArray);
+    }
+}
+
+void SudokuGUI::saveToFile(string stream){
+    myfile << stream << "\n";
+}
+
 void SudokuGUI::displayOperations(long long operations) {
     ostringstream ss;
     ss << operations;
@@ -75,14 +94,19 @@ void SudokuGUI::generate() {
 }
 
 void SudokuGUI::solveButtonClicked() {
+    if(saveFlag){
+        myfile.open("result.txt");
+    }
     solve();
     unsigned counter = 1;
-    
     while(counter < m_repetitionsCount)
     {
         ++counter;
         generate();
         solve();
+    }
+    if(saveFlag){
+        myfile.close();
     }
 }
 
@@ -94,6 +118,13 @@ void SudokuGUI::solve() {
     displayTime(solver.getSolveTime());
     displayOperations(solver.getSolveComplexity());
     changeCellsValue(m_sudokuSolvedArray, true);
+    if(saveFlag){
+        ostringstream ss;
+        ss << "metoda " << m_solveMethod << " poziom trudnosci " << m_level << " liczba operacji " << solver.getSolveComplexity() << 
+            " czas " << solver.getSolveTime()/1000000 << "s " << (solver.getSolveTime() % 1000000)/1000 << 
+            "ms " << (solver.getSolveTime() % 1000) << "us ";
+        saveToFile(ss.str());
+    }
 }
 
 void SudokuGUI::moveCellsIntoTable() {
