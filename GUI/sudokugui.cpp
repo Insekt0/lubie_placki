@@ -1,6 +1,7 @@
 #include "sudokugui.h"
 
 #include <sstream>
+#include <QMessageBox>
 
 SudokuGUI::SudokuGUI(QWidget *parent)
     : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0)
@@ -17,6 +18,8 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     QObject::connect(m_ui.RandomButtom, SIGNAL(clicked()),this,SLOT(randomSelected()));
     QObject::connect(m_ui.loadButton, SIGNAL(clicked(bool)),this,SLOT(loadSudokuButtonClicked()));
     QObject::connect(m_ui.saveToFileCheckbox, SIGNAL(toggled(bool)),this, SLOT(setSaveFlag(bool)));
+    QObject::connect(m_ui.aboutAuthors, SIGNAL(triggered()), this, SLOT(aboutAuthorsClicked()));
+    QObject::connect(m_ui.close, SIGNAL(triggered()), this, SLOT(close()));    
     displayOperations(-1);
     displayTime(-1);
     updateStatusBar(EMPTY);
@@ -89,6 +92,15 @@ void SudokuGUI::changeCellsValue(int* table, bool justAfterSolve){
         else
             m_cellsArray[i]->setFont(fontNormal);
     }
+}
+
+void SudokuGUI::aboutAuthorsClicked(){
+    QMessageBox msgBox;
+    msgBox.setText("O Autorach i programie:");
+    msgBox.setInformativeText("Projekt z przedmiotu WMH wykonany przez Micha\305\202a Jurkiewicza i Joann\304\231 Wi\305\233niewsk\304\205.\n\nRozwi\304\205zywanie Sudoku z wykorzystaniem algorytmu przeszukiwania w g\305\202\304\205b.");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    int ret = msgBox.exec();
 }
 
 void SudokuGUI::loadSudokuButtonClicked(){

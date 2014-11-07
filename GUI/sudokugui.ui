@@ -4351,6 +4351,14 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="aboutAuthors"/>
+    <addaction name="close"/>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -4374,6 +4382,16 @@
     </size>
    </property>
   </widget>
+  <action name="aboutAuthors">
+   <property name="text">
+    <string>O Autorach</string>
+   </property>
+  </action>
+  <action name="close">
+   <property name="text">
+    <string>Wyjdź</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

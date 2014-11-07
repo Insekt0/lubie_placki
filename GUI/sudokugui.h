@@ -25,6 +25,7 @@ class SudokuGUI : public QMainWindow
         void generateButtonClicked();
         void solveButtonClicked();
         void loadSudokuButtonClicked();
+        void aboutAuthorsClicked();
         void mostNeighboursSelected() { m_solveMethod = MOST_NEIGHBOURS; }
         void randomSelected() { m_solveMethod = RANDOM; }
         void setDifficultyLevel(int lvl) { m_level = static_cast<COMPLEXITY_LEVELS>(lvl+1); }
