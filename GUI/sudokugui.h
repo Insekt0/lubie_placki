@@ -16,8 +16,10 @@ class SudokuGUI : public QMainWindow
         void changeCellsValue(int* table);
         void displayTime(string time);
         void displayOperations(string operations);
+        void changeGridToArray(int* table);
     public slots:
-        void okButtonClicked();
+        void generateButtonClicked();
+        void solveButtonClicked();
         void mostNeighboursSelected();
         void randomSelected();
         void setDifficultyLevel(int lvl);
