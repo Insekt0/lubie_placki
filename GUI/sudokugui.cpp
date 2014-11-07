@@ -133,7 +133,6 @@ void SudokuGUI::generateButtonClicked() {
 }
 
 void SudokuGUI::generate() {
-    srand(unsigned(time(0)));
     updateStatusBar(EMPTY);
     displayOperations(-1);
     displayTime(-1);

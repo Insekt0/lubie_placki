@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
 #define ENSURE_FAST_GENERATION 1
 
 #if ENSURE_FAST_GENERATION
