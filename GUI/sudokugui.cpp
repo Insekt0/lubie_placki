@@ -55,12 +55,17 @@ void SudokuGUI::changeCellsValue(int* table, bool justAfterSolve){
     }
 }
 
-void SudokuGUI::displayOperations(long long operations){
+void SudokuGUI::displayOperations(long long operations) {
     ostringstream ss;
     ss << operations;
     ui.OperationsField->setText(QString::fromStdString(ss.str()));
 }
-void SudokuGUI::generateButtonClicked(){
+
+void SudokuGUI::generateButtonClicked() {
+    generate();
+}
+
+void SudokuGUI::generate() {
     srand(unsigned(time(0)));
     ui.OperationsField->setText("");
     ui.TimeField->setText("");
@@ -69,7 +74,19 @@ void SudokuGUI::generateButtonClicked(){
     changeCellsValue(m_sudokuGeneratedArray);
 }
 
-void SudokuGUI::solveButtonClicked(){
+void SudokuGUI::solveButtonClicked() {
+    solve();
+    unsigned counter = 1;
+    
+    while(counter < m_repetitionsCount)
+    {
+        ++counter;
+        generate();
+        solve();
+    }
+}
+
+void SudokuGUI::solve() {
     SudokuSolver solver(m_sudokuGeneratedArray);
     int* result = solver.solve(m_solveMethod);
     for (int i = 0; i < 81; ++i)
@@ -79,8 +96,7 @@ void SudokuGUI::solveButtonClicked(){
     changeCellsValue(m_sudokuSolvedArray, true);
 }
 
-void SudokuGUI::moveCellsIntoTable()
-{
+void SudokuGUI::moveCellsIntoTable() {
     m_cellsArray[0] = ui.cell1;
     m_cellsArray[1] = ui.cell2;
     m_cellsArray[2] = ui.cell3;

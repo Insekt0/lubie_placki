@@ -30,8 +30,10 @@ class SudokuGUI : public QMainWindow
         void displayOperations(long long operations);
         void changeGridToArray(int* table);
         void moveCellsIntoTable();
+        void generate();
+        void solve();
         
-        int m_repetitionsCount;        
+        unsigned m_repetitionsCount;        
         int m_sudokuGeneratedArray[81];
         int m_sudokuSolvedArray[81];
         NEXT_POINT_SEARCHING_SCENARIO m_solveMethod;

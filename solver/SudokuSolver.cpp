@@ -213,7 +213,6 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating, unsigne
     }
 
     unsigned nextCellPosition = m_cellsArray[newIndex];
-    m_cellsArray[newIndex] = -1;
 
     int result;
 
@@ -230,7 +229,6 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating, unsigne
     }
 
     m_sudokuTemporaryArray[position] = 0;
-    m_cellsArray[newIndex] = nextCellPosition;
     return -1; // dead end, solution is somewhere else
 }
 
