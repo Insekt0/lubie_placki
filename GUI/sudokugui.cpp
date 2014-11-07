@@ -17,8 +17,9 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     QObject::connect(m_ui.RandomButtom, SIGNAL(clicked()),this,SLOT(randomSelected()));
     QObject::connect(m_ui.loadButton, SIGNAL(clicked(bool)),this,SLOT(loadSudokuButtonClicked()));
     QObject::connect(m_ui.saveToFileCheckbox, SIGNAL(toggled(bool)),this, SLOT(setSaveFlag(bool)));
-    m_ui.OperationsField->setText("");
-    m_ui.TimeField->setText("");
+    displayOperations(-1);
+    displayTime(-1);
+    updateStatusBar(EMPTY);
     for (int i = 0; i < 81; ++i)
     {
         m_sudokuGeneratedArray[i] = 0;
@@ -30,8 +31,41 @@ SudokuGUI::SudokuGUI(QWidget *parent)
 
 void SudokuGUI::displayTime(long long time){
     ostringstream ss;
-    ss << time/1000000 << "s " << (time % 1000000)/1000 << "ms " << (time % 1000) << "us ";
+    ss << "";
+    if(time != -1)
+        ss << time/1000000 << "s " << (time % 1000000)/1000 << "ms " << (time % 1000) << "us ";
     m_ui.TimeField->setText(QString::fromStdString(ss.str()));
+}
+
+void SudokuGUI::updateStatusBar(STATUS_BAR_INFO status)
+{
+    string result;
+    switch(status)
+    {
+    case EMPTY:
+        result = "";
+        break;
+
+    case WRONG_SUDOKU_BOARD:
+        result = "Podany plik nie zawiera poprawnie sformatowanego sudoku";
+        break;
+        
+    case SUDOKU_UNSOLVABLE:
+        result = "Podane sudoku jest nierozwiazywalne";
+        break;
+
+    default:
+        assert(false);
+        result = "Wystapil niezdefiniowany blad";
+        break;
+    }
+
+    m_ui.statusBar->showMessage(QString::fromStdString(result));
+    QFont fontNormal("Times", 12, QFont::Bold, false);
+    QPalette palette;
+    palette.setColor( QPalette::WindowText, QColor(255,0,0) );
+    m_ui.statusBar->setFont(fontNormal);
+    m_ui.statusBar->setPalette(palette);
 }
 
 void SudokuGUI::changeGridToArray(int* table){
@@ -76,7 +110,9 @@ void SudokuGUI::saveToFile(string stream){
 
 void SudokuGUI::displayOperations(long long operations) {
     ostringstream ss;
-    ss << operations;
+    ss << "";
+    if(operations != -1)
+        ss << operations;
     m_ui.OperationsField->setText(QString::fromStdString(ss.str()));
 }
 
@@ -86,8 +122,9 @@ void SudokuGUI::generateButtonClicked() {
 
 void SudokuGUI::generate() {
     srand(unsigned(time(0)));
-    m_ui.OperationsField->setText("");
-    m_ui.TimeField->setText("");
+    updateStatusBar(EMPTY);
+    displayOperations(-1);
+    displayTime(-1);
     SudokuGenerator generator;
     generator.generate(m_sudokuGeneratedArray, m_level);
     changeCellsValue(m_sudokuGeneratedArray);
@@ -113,11 +150,24 @@ void SudokuGUI::solveButtonClicked() {
 void SudokuGUI::solve() {
     SudokuSolver solver(m_sudokuGeneratedArray);
     int* result = solver.solve(m_solveMethod);
+
+    if(!result)
+    {
+        updateStatusBar(SUDOKU_UNSOLVABLE);
+        displayTime(-1);
+        displayOperations(-1);
+        return;
+    }
+
+    updateStatusBar(EMPTY);
+
     for (int i = 0; i < 81; ++i)
         m_sudokuSolvedArray[i] = result[i];
+
     displayTime(solver.getSolveTime());
     displayOperations(solver.getSolveComplexity());
     changeCellsValue(m_sudokuSolvedArray, true);
+
     if(m_saveFlag){
         ostringstream ss;
         ss << "metoda " << m_solveMethod << " poziom trudnosci " << m_level << " liczba operacji " << solver.getSolveComplexity() << 

@@ -12,6 +12,12 @@
 #include <cstdlib>
 #include <QtWidgets/QMainWindow>
 
+enum STATUS_BAR_INFO {
+    EMPTY = 0,
+    WRONG_SUDOKU_BOARD,
+    SUDOKU_UNSOLVABLE
+};
+
 class SudokuGUI : public QMainWindow
 {
     Q_OBJECT
@@ -37,6 +43,7 @@ class SudokuGUI : public QMainWindow
         void generate();
         void solve();
         void saveToFile(string stream);
+        void updateStatusBar(STATUS_BAR_INFO status);
 
         ofstream m_file;
         unsigned m_repetitionsCount;        
