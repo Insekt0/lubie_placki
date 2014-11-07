@@ -4353,7 +4353,7 @@
    </property>
    <widget class="QMenu" name="menuMenu">
     <property name="title">
-     <string>Pomoc</string>
+     <string>Menu</string>
     </property>
     <addaction name="aboutAuthors"/>
     <addaction name="close"/>
