@@ -58,7 +58,7 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
             unsigned timeInNanoSec = sudoku.getSolveTime() % 1000;
 #endif
             LOG("Sudoku solved in MOST_NEIGHBOURS mode in: %us %ums %uus %uns\n", timeInSec, timeInMiliSec, timeInMicroSec, timeInNanoSec);
-            LOG("Operations performed: %d\n", sudoku.getSolveComplexity());
+            LOG("Operations performed: %u\n", static_cast<unsigned>(sudoku.getSolveComplexity()));
             LOG("Attempt: %d\n", attempt);
             break;
         }
@@ -71,7 +71,7 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
     // now we are removing cells
 
     string level;
-    int numberOfCellsLeftOnBoard;
+    int numberOfCellsLeftOnBoard = 0;
     switch(LEVEL)
     {
     case EXTREMELY_EASY:

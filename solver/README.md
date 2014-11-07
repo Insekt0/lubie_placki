@@ -1,4 +1,0 @@
-lubie_placki
-============
-
-placki

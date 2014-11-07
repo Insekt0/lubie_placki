@@ -1,15 +1,13 @@
 #include "sudokugui.h"
-#define SETCELLTEXT(x,y) ui.cell##x##->setText(QString::number(table[##y##])); 
-#define READCELLTEXT(x,y) table[##x##]=ui.cell##y##->text().toInt()
+
+#include <sstream>
 
 SudokuGUI::SudokuGUI(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0)
 {
     QStringList levelsList=(QStringList()<<"Ekstremalnie latwy"<<"Latwy"<<"Sredni"<<"Trudny"<<"Piekielnie trudny");
-    method = 0;
-    level = static_cast<COMPLEXITY_LEVELS>(1);
-    repetitions=0;
     ui.setupUi(this);
+    moveCellsIntoTable();
     ui.DifficultyLevelSelector->addItems(levelsList);
     QObject::connect(ui.generateButton, SIGNAL(clicked()),this,SLOT(generateButtonClicked()));
     QObject::connect(ui.solveButton, SIGNAL(clicked()),this,SLOT(solveButtonClicked()));
@@ -17,216 +15,151 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     QObject::connect(ui.RepetitionField, SIGNAL(textChanged(const QString &)),this, SLOT(setRepetitionCount(const QString &)));
     QObject::connect(ui.MostNeighboursButton, SIGNAL(clicked()), this,SLOT(mostNeighboursSelected()));
     QObject::connect(ui.RandomButtom, SIGNAL(clicked()),this,SLOT(randomSelected()));
+    ui.OperationsField->setText("");
+    ui.TimeField->setText("");
+    for (int i = 0; i < 81; ++i)
+    {
+        m_sudokuGeneratedArray[i] = 0;
+        m_sudokuSolvedArray[i] = 0;
+    }
+    changeCellsValue(m_sudokuGeneratedArray);
 }
 
-SudokuGUI::~SudokuGUI()
-{
 
-}
-void SudokuGUI::setRepetitionCount(const QString & repCount){
-    repetitions=repCount.toInt();
-}
-
-void SudokuGUI::displayTime(string time){
-    ui.TimeField->setText(QString::fromStdString(time));
+void SudokuGUI::displayTime(long long time){
+    ostringstream ss;
+    ss << time/1000000 << "s " << (time % 1000000)/1000 << "ms " << (time % 1000) << "us ";
+    ui.TimeField->setText(QString::fromStdString(ss.str()));
 }
 
 void SudokuGUI::changeGridToArray(int* table){
-    table[0]=ui.cell1->text().toInt();
-    table[1]=ui.cell2->text().toInt();
-    table[2]=ui.cell3->text().toInt();
-    table[3]=ui.cell4->text().toInt();
-    table[4]=ui.cell5->text().toInt();
-    table[5]=ui.cell6->text().toInt();
-    table[6]=ui.cell7->text().toInt();
-    table[7]=ui.cell8->text().toInt();
-    table[8]=ui.cell9->text().toInt();
-    table[9]=ui.cell10->text().toInt();
-    table[10]=ui.cell11->text().toInt();
-    table[11]=ui.cell12->text().toInt();
-    table[12]=ui.cell13->text().toInt();
-    table[13]=ui.cell14->text().toInt();
-    table[14]=ui.cell15->text().toInt();
-    table[15]=ui.cell16->text().toInt();
-    table[16]=ui.cell17->text().toInt();
-    table[17]=ui.cell18->text().toInt();
-    table[18]=ui.cell19->text().toInt();
-    table[19]=ui.cell20->text().toInt();
-    table[20]=ui.cell21->text().toInt();
-    table[21]=ui.cell22->text().toInt();
-    table[22]=ui.cell23->text().toInt();
-    table[23]=ui.cell24->text().toInt();
-    table[24]=ui.cell25->text().toInt();
-    table[25]=ui.cell26->text().toInt();
-    table[26]=ui.cell27->text().toInt();
-    table[27]=ui.cell28->text().toInt();
-    table[28]=ui.cell29->text().toInt();
-    table[29]=ui.cell30->text().toInt();
-    table[30]=ui.cell31->text().toInt();
-    table[31]=ui.cell32->text().toInt();
-    table[32]=ui.cell33->text().toInt();
-    table[33]=ui.cell34->text().toInt();
-    table[34]=ui.cell35->text().toInt();
-    table[35]=ui.cell36->text().toInt();
-    table[36]=ui.cell37->text().toInt();
-    table[37]=ui.cell38->text().toInt();
-    table[38]=ui.cell39->text().toInt();
-    table[39]=ui.cell40->text().toInt();
-    table[40]=ui.cell41->text().toInt();
-    table[41]=ui.cell42->text().toInt();
-    table[42]=ui.cell43->text().toInt();
-    table[43]=ui.cell44->text().toInt();
-    table[44]=ui.cell45->text().toInt();
-    table[45]=ui.cell46->text().toInt();
-    table[46]=ui.cell47->text().toInt();
-    table[47]=ui.cell48->text().toInt();
-    table[48]=ui.cell49->text().toInt();
-    table[49]=ui.cell50->text().toInt();
-    table[50]=ui.cell51->text().toInt();
-    table[51]=ui.cell52->text().toInt();
-    table[52]=ui.cell53->text().toInt();
-    table[53]=ui.cell54->text().toInt();
-    table[54]=ui.cell55->text().toInt();
-    table[55]=ui.cell56->text().toInt();
-    table[56]=ui.cell57->text().toInt();
-    table[57]=ui.cell58->text().toInt();
-    table[58]=ui.cell59->text().toInt();
-    table[59]=ui.cell60->text().toInt();
-    table[60]=ui.cell61->text().toInt();
-    table[61]=ui.cell62->text().toInt();
-    table[62]=ui.cell63->text().toInt();
-    table[63]=ui.cell64->text().toInt();
-    table[64]=ui.cell65->text().toInt();
-    table[65]=ui.cell66->text().toInt();
-    table[66]=ui.cell67->text().toInt();
-    table[67]=ui.cell68->text().toInt();
-    table[68]=ui.cell69->text().toInt();
-    table[69]=ui.cell70->text().toInt();
-    table[70]=ui.cell71->text().toInt();
-    table[71]=ui.cell72->text().toInt();
-    table[72]=ui.cell73->text().toInt();
-    table[73]=ui.cell74->text().toInt();
-    table[74]=ui.cell75->text().toInt();
-    table[75]=ui.cell76->text().toInt();
-    table[76]=ui.cell77->text().toInt();
-    table[77]=ui.cell78->text().toInt();
-    table[78]=ui.cell79->text().toInt();
-    table[79]=ui.cell80->text().toInt();
-    table[80]=ui.cell81->text().toInt();
+    for(int i = 0; i < 81; ++i)
+        table[i] = m_cellsArray[i]->text().toInt();
 }
 
-void SudokuGUI::changeCellsValue(int* table){
-    //for (int i=0; i<81;++i){
-    ui.cell1->setText(QString::number(table[0]));
-    ui.cell2->setText(QString::number(table[1]));
-    ui.cell3->setText(QString::number(table[2]));
-    ui.cell4->setText(QString::number(table[3]));
-    ui.cell5->setText(QString::number(table[4]));
-    ui.cell6->setText(QString::number(table[5]));
-    ui.cell7->setText(QString::number(table[6]));
-    ui.cell8->setText(QString::number(table[7]));
-    ui.cell9->setText(QString::number(table[8]));
-    ui.cell10->setText(QString::number(table[9]));
-    ui.cell11->setText(QString::number(table[10]));
-    ui.cell12->setText(QString::number(table[11]));
-    ui.cell13->setText(QString::number(table[12]));
-    ui.cell14->setText(QString::number(table[13]));
-    ui.cell15->setText(QString::number(table[14]));
-    ui.cell16->setText(QString::number(table[15]));
-    ui.cell17->setText(QString::number(table[16]));
-    ui.cell18->setText(QString::number(table[17]));
-    ui.cell19->setText(QString::number(table[18]));
-    ui.cell20->setText(QString::number(table[19]));
-    ui.cell21->setText(QString::number(table[20]));
-    ui.cell22->setText(QString::number(table[21]));
-    ui.cell23->setText(QString::number(table[22]));
-    ui.cell24->setText(QString::number(table[23]));
-    ui.cell25->setText(QString::number(table[24]));
-    ui.cell26->setText(QString::number(table[25]));
-    ui.cell27->setText(QString::number(table[26]));
-    ui.cell28->setText(QString::number(table[27]));
-    ui.cell29->setText(QString::number(table[28]));
-    ui.cell30->setText(QString::number(table[29]));
-    ui.cell31->setText(QString::number(table[30]));
-    ui.cell32->setText(QString::number(table[31]));
-    ui.cell33->setText(QString::number(table[32]));
-    ui.cell34->setText(QString::number(table[33]));
-    ui.cell35->setText(QString::number(table[34]));
-    ui.cell36->setText(QString::number(table[35]));
-    ui.cell37->setText(QString::number(table[36]));
-    ui.cell38->setText(QString::number(table[37]));
-    ui.cell39->setText(QString::number(table[38]));
-    ui.cell40->setText(QString::number(table[39]));
-    ui.cell41->setText(QString::number(table[40]));
-    ui.cell42->setText(QString::number(table[41]));
-    ui.cell43->setText(QString::number(table[42]));
-    ui.cell44->setText(QString::number(table[43]));
-    ui.cell45->setText(QString::number(table[44]));
-    ui.cell46->setText(QString::number(table[45]));
-    ui.cell47->setText(QString::number(table[46]));
-    ui.cell48->setText(QString::number(table[47]));
-    ui.cell49->setText(QString::number(table[48]));
-    ui.cell50->setText(QString::number(table[49]));
-    ui.cell51->setText(QString::number(table[50]));
-    ui.cell52->setText(QString::number(table[51]));
-    ui.cell53->setText(QString::number(table[52]));
-    ui.cell54->setText(QString::number(table[53]));
-    ui.cell55->setText(QString::number(table[54]));
-    ui.cell56->setText(QString::number(table[55]));
-    ui.cell57->setText(QString::number(table[56]));
-    ui.cell58->setText(QString::number(table[57]));
-    ui.cell59->setText(QString::number(table[58]));
-    ui.cell60->setText(QString::number(table[59]));
-    ui.cell61->setText(QString::number(table[60]));
-    ui.cell62->setText(QString::number(table[61]));
-    ui.cell63->setText(QString::number(table[62]));
-    ui.cell64->setText(QString::number(table[63]));
-    ui.cell65->setText(QString::number(table[64]));
-    ui.cell66->setText(QString::number(table[65]));
-    ui.cell67->setText(QString::number(table[66]));
-    ui.cell68->setText(QString::number(table[67]));
-    ui.cell69->setText(QString::number(table[68]));
-    ui.cell70->setText(QString::number(table[69]));
-    ui.cell71->setText(QString::number(table[70]));
-    ui.cell72->setText(QString::number(table[71]));
-    ui.cell73->setText(QString::number(table[72]));
-    ui.cell74->setText(QString::number(table[73]));
-    ui.cell75->setText(QString::number(table[74]));
-    ui.cell76->setText(QString::number(table[75]));
-    ui.cell77->setText(QString::number(table[76]));
-    ui.cell78->setText(QString::number(table[77]));
-    ui.cell79->setText(QString::number(table[78]));
-    ui.cell80->setText(QString::number(table[79]));
-    ui.cell81->setText(QString::number(table[80]));
-    //ui.STEP2(RESOLVE(i), 4);
-    //}
+void SudokuGUI::changeCellsValue(int* table, bool justAfterSolve){
+    
+    QFont fontNormal("Times", 15, QFont::Light, false);
+    QFont fontBold("Times", 18, QFont::Bold, false);
+    for (int i=0; i<81;++i) 
+    {
+        if(!table[i])
+            m_cellsArray[i]->setText("");
+        else
+            m_cellsArray[i]->setText(QString::number(table[i]));
+
+        if (justAfterSolve && m_sudokuSolvedArray[i] != m_sudokuGeneratedArray[i])
+            m_cellsArray[i]->setFont(fontBold);
+        else
+            m_cellsArray[i]->setFont(fontNormal);
+    }
 }
 
-void SudokuGUI::displayOperations(string operations){
-    ui.OperationsField->setText(QString::fromStdString(operations));
+void SudokuGUI::displayOperations(long long operations){
+    ostringstream ss;
+    ss << operations;
+    ui.OperationsField->setText(QString::fromStdString(ss.str()));
 }
 void SudokuGUI::generateButtonClicked(){
     srand(unsigned(time(0)));
-    int* sudokuArray = new int[81]();
+    ui.OperationsField->setText("");
+    ui.TimeField->setText("");
     SudokuGenerator generator;
-    generator.generate(sudokuArray, level);
-    changeCellsValue(sudokuArray);
-    delete[] sudokuArray;
+    generator.generate(m_sudokuGeneratedArray, m_level);
+    changeCellsValue(m_sudokuGeneratedArray);
 }
 
 void SudokuGUI::solveButtonClicked(){
-
+    SudokuSolver solver(m_sudokuGeneratedArray);
+    int* result = solver.solve(m_solveMethod);
+    for (int i = 0; i < 81; ++i)
+        m_sudokuSolvedArray[i] = result[i];
+    displayTime(solver.getSolveTime());
+    displayOperations(solver.getSolveComplexity());
+    changeCellsValue(m_sudokuSolvedArray, true);
 }
 
-void SudokuGUI::mostNeighboursSelected(){
-    method = 0;
+void SudokuGUI::moveCellsIntoTable()
+{
+    m_cellsArray[0] = ui.cell1;
+    m_cellsArray[1] = ui.cell2;
+    m_cellsArray[2] = ui.cell3;
+    m_cellsArray[3] = ui.cell4;
+    m_cellsArray[4] = ui.cell5;
+    m_cellsArray[5] = ui.cell6;
+    m_cellsArray[6] = ui.cell7;
+    m_cellsArray[7] = ui.cell8;
+    m_cellsArray[8] = ui.cell9;
+    m_cellsArray[9] = ui.cell10;
+    m_cellsArray[10] = ui.cell11;
+    m_cellsArray[11] = ui.cell12;
+    m_cellsArray[12] = ui.cell13;
+    m_cellsArray[13] = ui.cell14;
+    m_cellsArray[14] = ui.cell15;
+    m_cellsArray[15] = ui.cell16;
+    m_cellsArray[16] = ui.cell17;
+    m_cellsArray[17] = ui.cell18;
+    m_cellsArray[18] = ui.cell19;
+    m_cellsArray[19] = ui.cell20;
+    m_cellsArray[20] = ui.cell21;
+    m_cellsArray[21] = ui.cell22;
+    m_cellsArray[22] = ui.cell23;
+    m_cellsArray[23] = ui.cell24;
+    m_cellsArray[24] = ui.cell25;
+    m_cellsArray[25] = ui.cell26;
+    m_cellsArray[26] = ui.cell27;
+    m_cellsArray[27] = ui.cell28;
+    m_cellsArray[28] = ui.cell29;
+    m_cellsArray[29] = ui.cell30;
+    m_cellsArray[30] = ui.cell31;
+    m_cellsArray[31] = ui.cell32;
+    m_cellsArray[32] = ui.cell33;
+    m_cellsArray[33] = ui.cell34;
+    m_cellsArray[34] = ui.cell35;
+    m_cellsArray[35] = ui.cell36;
+    m_cellsArray[36] = ui.cell37;
+    m_cellsArray[37] = ui.cell38;
+    m_cellsArray[38] = ui.cell39;
+    m_cellsArray[39] = ui.cell40;
+    m_cellsArray[40] = ui.cell41;
+    m_cellsArray[41] = ui.cell42;
+    m_cellsArray[42] = ui.cell43;
+    m_cellsArray[43] = ui.cell44;
+    m_cellsArray[44] = ui.cell45;
+    m_cellsArray[45] = ui.cell46;
+    m_cellsArray[46] = ui.cell47;
+    m_cellsArray[47] = ui.cell48;
+    m_cellsArray[48] = ui.cell49;
+    m_cellsArray[49] = ui.cell50;
+    m_cellsArray[50] = ui.cell51;
+    m_cellsArray[51] = ui.cell52;
+    m_cellsArray[52] = ui.cell53;
+    m_cellsArray[53] = ui.cell54;
+    m_cellsArray[54] = ui.cell55;
+    m_cellsArray[55] = ui.cell56;
+    m_cellsArray[56] = ui.cell57;
+    m_cellsArray[57] = ui.cell58;
+    m_cellsArray[58] = ui.cell59;
+    m_cellsArray[59] = ui.cell60;
+    m_cellsArray[60] = ui.cell61;
+    m_cellsArray[61] = ui.cell62;
+    m_cellsArray[62] = ui.cell63;
+    m_cellsArray[63] = ui.cell64;
+    m_cellsArray[64] = ui.cell65;
+    m_cellsArray[65] = ui.cell66;
+    m_cellsArray[66] = ui.cell67;
+    m_cellsArray[67] = ui.cell68;
+    m_cellsArray[68] = ui.cell69;
+    m_cellsArray[69] = ui.cell70;
+    m_cellsArray[70] = ui.cell71;
+    m_cellsArray[71] = ui.cell72;
+    m_cellsArray[72] = ui.cell73;
+    m_cellsArray[73] = ui.cell74;
+    m_cellsArray[74] = ui.cell75;
+    m_cellsArray[75] = ui.cell76;
+    m_cellsArray[76] = ui.cell77;
+    m_cellsArray[77] = ui.cell78;
+    m_cellsArray[78] = ui.cell79;
+    m_cellsArray[79] = ui.cell80;
+    m_cellsArray[80] = ui.cell81;
 }
-
-void SudokuGUI::randomSelected(){
-    method = 1;
-}
-
-void SudokuGUI::setDifficultyLevel(int lvl){
-    level = static_cast<COMPLEXITY_LEVELS>(lvl+1);
-}
-
