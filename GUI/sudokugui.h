@@ -15,7 +15,8 @@
 enum STATUS_BAR_INFO {
     EMPTY = 0,
     WRONG_SUDOKU_BOARD,
-    SUDOKU_UNSOLVABLE
+    SUDOKU_UNSOLVABLE,
+    NO_BOARD_LOADED
 };
 
 class SudokuGUI : public QMainWindow
@@ -51,6 +52,7 @@ class SudokuGUI : public QMainWindow
         int m_sudokuGeneratedArray[81];
         int m_sudokuSolvedArray[81];
         bool m_saveFlag;
+        bool m_canBeSolved;
         NEXT_POINT_SEARCHING_SCENARIO m_solveMethod;
         COMPLEXITY_LEVELS m_level;
         Ui::SudokuGUIClass m_ui;

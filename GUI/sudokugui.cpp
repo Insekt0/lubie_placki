@@ -4,7 +4,7 @@
 #include <QMessageBox>
 
 SudokuGUI::SudokuGUI(QWidget *parent)
-    : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0)
+    : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0), m_canBeSolved(false)
 {
     QStringList levelsList=(QStringList()<<"Ekstremalnie \305\202atwy"<<"\305\201atwy"<<"\305\232redni"<<"Trudny"<<"Piekielnie trudny");
     m_ui.setupUi(this);
@@ -55,6 +55,10 @@ void SudokuGUI::updateStatusBar(STATUS_BAR_INFO status)
         
     case SUDOKU_UNSOLVABLE:
         result = "Podane sudoku jest nierozwiazywalne";
+        break;
+
+    case NO_BOARD_LOADED:
+        result = "Zaladuj lub wygeneruj sudoku, ktore chcesz rozwiazac";
         break;
 
     default:
@@ -111,7 +115,25 @@ void SudokuGUI::loadSudokuButtonClicked(){
         int value;
         int counter = 0;
         while(myfile >> value)
+        {
+            if(value%10 != value || counter >= 81)
+            {
+                m_canBeSolved = false;
+                updateStatusBar(WRONG_SUDOKU_BOARD);
+                return;
+            }
             m_sudokuGeneratedArray[counter++] = value;
+        }
+        if(counter != 81)
+        {
+            m_canBeSolved = false;
+            updateStatusBar(WRONG_SUDOKU_BOARD);
+            return;
+        }
+
+        m_canBeSolved = true;
+        updateStatusBar(EMPTY);
+
         changeCellsValue(m_sudokuGeneratedArray);
     }
 }
@@ -139,9 +161,17 @@ void SudokuGUI::generate() {
     SudokuGenerator generator;
     generator.generate(m_sudokuGeneratedArray, m_level);
     changeCellsValue(m_sudokuGeneratedArray);
+    m_canBeSolved = true;
 }
 
 void SudokuGUI::solveButtonClicked() {
+    
+    if(!m_canBeSolved)
+    {
+        updateStatusBar(NO_BOARD_LOADED);
+        return;
+    }
+
     if(m_saveFlag){
         m_file.open("result.txt");
     }
