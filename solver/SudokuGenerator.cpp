@@ -76,7 +76,7 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
     {
     case EXTREMELY_EASY:
         level = "Extremely easy";
-        numberOfCellsLeftOnBoard = rand() % 31 + 50;
+        numberOfCellsLeftOnBoard = rand() % 22 + 50;
         break;
     case EASY:
         level = "Easy";
