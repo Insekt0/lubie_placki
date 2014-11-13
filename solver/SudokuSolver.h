@@ -10,7 +10,9 @@ struct Cell {
     int* m_column;
     int* m_square;
 };
-
+/*!
+* Klasa implementuj¹ca algorytm przeszukiwania w g³¹b do rozwi¹zywania Sudoku.
+*/
 class SudokuSolver {
 public:
     SudokuSolver(int* sudokuArray);
