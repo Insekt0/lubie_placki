@@ -34,10 +34,10 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
             
             SudokuSolver::checkPossibleValues(y, x, sudokuArray, possibleValues);
             
-            for(int i = 0; i < 9; ++i)
-                if(possibleValues[i])
+            for(int j = 0; j < 9; ++j)
+                if(possibleValues[j])
                 {
-                    sudokuArray[chosenPosition] = i+1;
+                    sudokuArray[chosenPosition] = j+1;
                     break;
                 }
         }

@@ -10,21 +10,21 @@ Struktura opisuj¹ca komórkê w siatce ³amig³ówki Sudoku.
 */
 struct Cell {
     /*!
-    Pozycja w wierszu.
+    WskaŸnik na wiersz, w której znajduje siê dana komórka.
     */
     int* m_row;
     /*!
-    Pozycja w kolumnie.
+    WskaŸnik na kolumnê, w której znajduje siê dana komórka.
     */
     int* m_column;
     /*!
-    Pozycja w grupie 3x3.
+    WskaŸnik na grupê 3x3, w której znajduje siê dana komórka.
     */
     int* m_square;
 };
 
 /*!
-* Klasa implementuj¹ca algorytm przeszukiwania w g³¹b do rozwi¹zywania Sudoku.
+* Klasa implementuj¹ca algorytm rozwi¹zywania Sudoku.
 */
 class SudokuSolver {
 public:
@@ -36,27 +36,27 @@ public:
     /*!
     Funkcja s³u¿¹ca do zarz¹dzania procesem rozwi¹zania Sudoku.
     @param SCENARIO - sposób rozwi¹zania
-    @param isGenerating - flaga, mówi¹ca o tym, czy proces rozwi¹zywania ma uwzglêdniaæ ograniczenie na iloœæ operacji.
+    @param isGenerating - flaga, mówi¹ca o tym, czy proces rozwi¹zywania jest wywo³any do celów generacji sudoku.
     */
     int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating = false);
     /*!
-    Funkcja sprawdzaj¹ca mo¿liwoœæ wstawienia danej cyfry w dane miejsce.
+    Funkcja zwracaj¹ca tablicê, w której znajduje siê informacja na temat mo¿liwych do wstawienia wartoœci w dan¹ komórkê.
     @param itsY - pozycja komórki w osi Y
     @param itsX - pozycja komórki w osi X
-    @param sudokuArray - tablica z rozwi¹zywanym Sudoku
+    @param sudokuArray - tablica z badanym sudoku
     @param resultArray - tablica mo¿liwych do wstawienia wartoœci
     */
     static void checkPossibleValues(int itsY, int itsX, int* sudokuArray, bool* resultArray);
     /*!
-    Funkcja do znalezienia wolnych komórek w siatce Sudoku.
+    Funkcja do znalezienia wolnych komórek w siatce Sudoku i poszeregowaniu ich wg podanego scenariusza.
     @param SCENARIO - sposób rozwi¹zania Sudoku
     */
     void findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO);
     /*!
     Funkcja rekurencyjna, poszukuj¹ca rozwi¹zania Sudoku poprzez rozpinanie kolejnych ga³êzi drzewa mo¿liwych rozwi¹zañ.
-    @param position - pozycja, dla której aktualnie poszukujemy rozwi¹zania
-    @param isGenerating - flaga informuj¹ca o tym, czy nale¿y uwzglêdniaæ ograniczenie na liczbê operacji
-    @param newIndex - nastêpna pozycja do poszukiwania rowi¹zania
+    @param position - pozycja komórki, dla której aktualnie poszukujemy rozwi¹zania
+    @param isGenerating - flaga, mówi¹ca o tym, czy proces rozwi¹zywania jest wywo³any do celów generacji sudoku.
+    @param newIndex - pozycja komórki w posortowanej tablicy, dla której aktualnie poszukujemy rozwi¹zania. Jest to informacja któr¹ komórkê z rzêdu analizujemy.
     @return 0 - jeœli znaleziono rozwi¹zanie, -1 - gdy nie znaleziono rozwi¹zania, -2 - gdy Sudoku by³o zbyt d³ugo rozwi¹zywane (przy generacji)
     */
     int recursiveSearchInTree(int position, bool isGenerating, unsigned newIndex);
@@ -72,32 +72,18 @@ public:
     */
     inline bool checkCollision(int position, int value);
     /*!
-    Funkcja s³u¿aca do wstawienia wartoœci w struktury reprezntuj¹ce wiersz, kolumnê i grupê 3x3.
-    @param position - pozycja, na któr¹ chcemy wstawiæ wartoœæ
+    Funkcja s³u¿aca do wstawienia wartoœci w struktury reprezentuj¹ce wiersz, kolumnê i grupê 3x3.
+    @param position - pozycja, w któr¹ chcemy wstawiæ wartoœæ
     @param value - wartoœæ, któr¹ chcemy wstawiæ
     */
     inline void setCellValue(int position, int value);
     /*!
-    Funkcja do usuwania wartoœci z danej pozycji w strukturach reprezntuj¹cych wiersz, kolumnê i grupê 3x3.
+    Funkcja do usuwania wartoœci z danej pozycji w strukturach reprezentuj¹cych wiersz, kolumnê i grupê 3x3.
     @param position - pozycja, z której chcemy usun¹æ wartoœæ
-    @param value - wartoœæ, któr¹ chcemy wstawiæ
+    @param value - wartoœæ, któr¹ chcemy usun¹æ
     */
     inline void removeCellValue(int position, int value);
 
-    /*!
-    Akcesor s³u¿¹cy do odnalezienia odpowiedniej wartoœci w tablicy jednowymiarowej z Sudoku.
-    @param x - pozycja w x
-    @param y - pozycja w y
-    @return wartoœæ w tablicy jednowymiarowej
-    */
-    inline int& accessSudokuArray(int y, int x) { return m_sudokuArray[(x-1) + (y-1)*9]; }
-    /*!
-    Akcesor s³u¿¹cy do odnalezienia odpowiedniej wartoœci w tablicy jednowymiarowej tymczasowej.
-    @param x - pozycja w x
-    @param y - pozycja w y
-    @return wartoœæ w tablicy jednowymiarowej
-    */
-    inline int& accessTemporaryArray(int y, int x) { return m_sudokuTemporaryArray[x-1 + (y-1)*9]; }
     /*!
     Funkcja konwertuj¹ca pozycjê w tablicy jednowymiarowej na pozycjê dwuwymiarow¹.
     @param position - pozycja jednowymiarowa
@@ -162,7 +148,7 @@ private:
     */
     unsigned m_cellsNumber;
     /*!
-    Flaga mówi¹ca o tym, czy Sudoku jest ju¿ rozwi¹zane.
+    Flaga mówi¹ca o tym, czy Sudoku, ktore zostalo podane do konstruktora tej klasy, jest ju¿ rozwi¹zane.
     */
     bool isSudokuAlreadySolved;
 };

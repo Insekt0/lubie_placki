@@ -30,7 +30,7 @@ void SudokuSolver::findAndSortEmptyCells(NEXT_POINT_SEARCHING_SCENARIO SCENARIO)
     for (int y = 1; y <= 9; ++y)
         for (int x = 1; x <= 9; ++x)
         {
-            if (accessSudokuArray(y, x))
+            if (m_sudokuArray[(x-1) + (y-1)*9])
                 continue;
 
             switch(SCENARIO)
