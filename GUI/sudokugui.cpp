@@ -23,6 +23,9 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     displayOperations(-1);
     displayTime(-1);
     updateStatusBar(EMPTY);
+    m_ui.progressBar->reset();
+    m_ui.progressBar->setValue(0);
+    m_ui.progressBar->setRange(0,100);
     for (int i = 0; i < 81; ++i)
     {
         m_sudokuGeneratedArray[i] = 0;
@@ -108,6 +111,7 @@ void SudokuGUI::aboutAuthorsClicked(){
 }
 
 void SudokuGUI::loadSudokuButtonClicked(){
+    
     string filename = QFileDialog::getOpenFileName(this,tr("Otw\303\263rz plik z Sudoku"), ".", tr("Pliki tekstowe (*.txt)")).toStdString();
     if(!filename.empty()){
         ifstream myfile;
@@ -135,6 +139,7 @@ void SudokuGUI::loadSudokuButtonClicked(){
         updateStatusBar(EMPTY);
 
         changeCellsValue(m_sudokuGeneratedArray);
+        m_ui.progressBar->setValue(0);
     }
 }
 
@@ -151,6 +156,7 @@ void SudokuGUI::displayOperations(long long operations) {
 }
 
 void SudokuGUI::generateButtonClicked() {
+    m_ui.progressBar->setValue(0);
     generate();
 }
 
@@ -165,20 +171,22 @@ void SudokuGUI::generate() {
 }
 
 void SudokuGUI::solveButtonClicked() {
-    
+    m_ui.progressBar->setValue(0);
     if(!m_canBeSolved)
     {
         updateStatusBar(NO_BOARD_LOADED);
         return;
     }
-
     if(m_saveFlag){
         m_file.open("result.txt");
     }
     solve();
     unsigned counter = 1;
+    unsigned progressBarStatus;
     while(counter < m_repetitionsCount)
     {
+        progressBarStatus = (100*counter)/m_repetitionsCount;
+        m_ui.progressBar->setValue(progressBarStatus);
         ++counter;
         generate();
         solve();
@@ -186,6 +194,7 @@ void SudokuGUI::solveButtonClicked() {
     if(m_saveFlag){
         m_file.close();
     }
+    m_ui.progressBar->setValue(100);
 }
 
 void SudokuGUI::solve() {
