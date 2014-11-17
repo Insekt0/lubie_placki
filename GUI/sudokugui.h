@@ -13,7 +13,7 @@
 #include <QtWidgets/QMainWindow>
 
 /*!
-Enumeracja opisuj¹ca mo¿liwe wydarzenia, wyœwietlane na pasku stanu.
+Enumeracja opisujaca mozliwe wydarzenia, wyswietlane na pasku stanu.
 */
 enum STATUS_BAR_INFO {
     EMPTY = 0,
@@ -22,108 +22,108 @@ enum STATUS_BAR_INFO {
     NO_BOARD_LOADED
 };
 /*!
-Klasa okna g³ównego programu.
+Klasa okna glownego programu.
 */
 class SudokuGUI : public QMainWindow
 {
     Q_OBJECT
     public slots:
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za generacjê. Wywo³uje proces generacji.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za generacje. Wywoluje proces generacji.
         */
         void generateButtonClicked();
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za rozwi¹zywanie Sudoku. Wywo³uje proces rozwi¹zywania.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za rozwiazywanie Sudoku. Wywoluje proces rozwiazywania.
         */
         void solveButtonClicked();
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za wczytywane Sudoku z pliku. Wywo³uje okno wyboru pliku.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za wczytywane Sudoku z pliku. Wywoluje okno wyboru pliku.
         */
         void loadSudokuButtonClicked();
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia menu odpowiedzialnego za wyœwietlanie informacji o autorach. Wyœwietla okno z informacjami.
+        Funkcja odbierajaca sygnal wcisniecia menu odpowiedzialnego za wyswietlanie informacji o autorach. Wyswietla okno z informacjami.
         */
         void aboutAuthorsClicked();
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za wybór metody rozwi¹zywania Sudoku - najwiêcej s¹siadów.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za wybor metody rozwiazywania Sudoku - najwiecej sasiadow.
         */
         void mostNeighboursSelected() { m_solveMethod = MOST_NEIGHBOURS; }
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za wybór metody rozwi¹zywania Sudoku - losowy.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za wybor metody rozwiazywania Sudoku - losowy.
         */
         void randomSelected() { m_solveMethod = RANDOM; }
         /*!
-        Funkcja odbieraj¹ca sygna³ wciœniêcia klawisza odpowiedzialnego za wybór poziomu trudnoœci.
-        @param lvl - wybrany poziom trudnoœci.
+        Funkcja odbierajaca sygnal wcisniecia klawisza odpowiedzialnego za wybor poziomu trudnosci.
+        @param lvl - wybrany poziom trudnosci.
         */
         void setDifficultyLevel(int lvl) { m_level = static_cast<COMPLEXITY_LEVELS>(lvl+1); }
         /*!
-        Funkcja odbieraj¹ca sygna³ wpisania iloœci powtórzeñ.
-        @param repCount - wpisana iloœæ powtórzeñ.
+        Funkcja odbierajaca sygnal wpisania ilosci powtorzen.
+        @param repCount - wpisana ilosc powtorzen.
         */
         void setRepetitionCount(const QString & repCount) { m_repetitionsCount = repCount.toInt(); }
         /*!
-        Funkcja odbieraj¹ca sygna³ wybrania opcji zapisu do pliku.
-        @param flag - przyjmuje wartoœæ true, gdy u¿ytkownik wybierze tryb zapisu do pliku.
+        Funkcja odbierajaca sygnal wybrania opcji zapisu do pliku.
+        @param flag - przyjmuje wartosc true, gdy uzytkownik wybierze tryb zapisu do pliku.
         */
         void setSaveFlag(bool flag) { m_saveFlag = flag; }
 
     public:
         /*!
-        Konstruktor klasy SudokuGUI. Inicjuje zmienne i wi¹¿e sygna³y i funkcje je odbieraj¹ce ze sob¹.
+        Konstruktor klasy SudokuGUI. Inicjuje zmienne i wiaze sygnaly i funkcje je odbierajace ze soba.
         */
         SudokuGUI(QWidget *parent = 0);
 
     private:
         /*!
-        Funkcja zmieniaj¹ca wartoœci komórek w graficznej siatce Sudoku,
-        @param table - tablica, z której maj¹ byæ odczytywane nowe wartoœci
-        @param justAfterSolve - flaga informuj¹ca, jak¹ czcionk¹ maj¹ byæ wyœwietlane wartoœci.
+        Funkcja zmieniajaca wartosci komorek w graficznej siatce Sudoku,
+        @param table - tablica, z ktorej maja byc odczytywane nowe wartosci
+        @param justAfterSolve - flaga informujaca, jaka czcionka maja byc wyswietlane wartosci.
         */
         void changeCellsValue(int* table, bool justAfterSolve = false);
         /*!
-        Funkcja wyœwietlaj¹ca czas rozwi¹zywania.
-        @param time - czas rozwi¹zywania.
+        Funkcja wyswietlajaca czas rozwiazywania.
+        @param time - czas rozwiazywania.
         */
         void displayTime(long long time);
         /*!
-        Funkcja wyœwietlaj¹ca liczbê operacji.
+        Funkcja wyswietlajaca liczbe operacji.
         @param operations - liczba operacji.
         */
         void displayOperations(long long operations);
         /*!
-        Zamiana tablicy z graficzn¹ siatk¹ Sudoku na tablicê intów.
+        Zamiana tablicy z graficzna siatka Sudoku na tablice intow.
         */
         void changeGridToArray(int* table);
         /*!
-        Funkcja grupuj¹ca komórki z graficznej siatki Sudoku w tablicê.
+        Funkcja grupujaca komorki z graficznej siatki Sudoku w tablice.
         */
         void moveCellsIntoTable();
         /*!
-        Funkcja wywo³uj¹ca metody klasy SudokuGenerator, odpowiadaj¹ce za generowanie Sudoku.
+        Funkcja wywolujaca metody klasy SudokuGenerator, odpowiadajace za generowanie Sudoku.
         */
         void generate();
         /*!
-        Funkcja wywo³uj¹ca metody klasy SudokuSolver, odpowiadaj¹ce za rozwi¹zanie Sudoku.
+        Funkcja wywolujaca metody klasy SudokuSolver, odpowiadajace za rozwiazanie Sudoku.
         */
         void solve();
         /*!
         Funkcja odpowiedzialna za zapis do pliku.
-        @param stream - dane, które maj¹ byæ zapisane w pliku.
+        @param stream - dane, ktore maja byc zapisane w pliku.
         */
         void saveToFile(string stream);
         /*!
         Funkcja odpowiedzialna za aktualizowanie paska stanu.
-        @param status - informacja, ktora ma zostaæ wyœwietlona.
+        @param status - informacja, ktora ma zostac wyswietlona.
         */
         void updateStatusBar(STATUS_BAR_INFO status);
 
         /*!
-        Plik, w którym maj¹ byæ zapisywane wyniki.
+        Plik, w ktorym maja byc zapisywane wyniki.
         */
         ofstream m_file;
         /*!
-        Iloœæ powtórzeñ.
+        Ilosc powtorzen.
         */
         unsigned m_repetitionsCount;
         /*!
@@ -131,27 +131,27 @@ class SudokuGUI : public QMainWindow
         */
         int m_sudokuGeneratedArray[81];
         /*!
-        Tablica z rozwi¹zanym Sudoku.
+        Tablica z rozwiazanym Sudoku.
         */
         int m_sudokuSolvedArray[81];
         /*!
-        Flaga informuj¹ca, czy wyniki maj¹ byæ zapisywane do pliku.
+        Flaga informujaca, czy wyniki maja byc zapisywane do pliku.
         */
         bool m_saveFlag;
         /*!
-        Flaga informuj¹ca, czy wczytane Sudoku jest poprawne.
+        Flaga informujaca, czy wczytane Sudoku jest poprawne.
         */
         bool m_canBeSolved;
         /*!
-        Sposób rozwi¹zywania Sudoku.
+        Sposob rozwiazywania Sudoku.
         */
         NEXT_POINT_SEARCHING_SCENARIO m_solveMethod;
         /*!
-        Poziom trudnoœci Sudoku.
+        Poziom trudnosci Sudoku.
         */
         COMPLEXITY_LEVELS m_level;
         /*!
-        Obiekt opisuj¹cy uklad graficzny programu.
+        Obiekt opisujacy uklad graficzny programu.
         */
         Ui::SudokuGUIClass m_ui;
         /*!

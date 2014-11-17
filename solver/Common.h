@@ -7,25 +7,25 @@
 using namespace std;
 
 /*!
-Define dla trybu debuggowego, który w³¹cza asercje i dodatkowe logi
+Define dla trybu debuggowego, ktory wlacza asercje i dodatkowe logi
 */
 #define DEBUG_MODE 0
 
 /*!
-Zapewnienie szybkiej generacji sudoku - jeœli liczba kroków przekroczy MAX_OPERATIONS, sudoku jest generowane od nowa
+Zapewnienie szybkiej generacji sudoku - jesli liczba krokow przekroczy MAX_OPERATIONS, sudoku jest generowane od nowa
 */
 #define ENSURE_FAST_GENERATION 1
 
 #if ENSURE_FAST_GENERATION
 /*!
-Ustawienie maksymalnej liczby operacji przy generowaniu sudoku, po której jest ono generowane od nowa
+Ustawienie maksymalnej liczby operacji przy generowaniu sudoku, po ktorej jest ono generowane od nowa
 */
 #define MAX_OPERATIONS 1000000
 #endif
 
 
 /*!
-Enumeracja mo¿liwych poziomów trudnoœci
+Enumeracja mozliwych poziomow trudnosci
 */
 enum COMPLEXITY_LEVELS {
     EXTREMELY_EASY = 1,
@@ -37,7 +37,7 @@ enum COMPLEXITY_LEVELS {
 
 
 /*!
-Enumeracja mo¿liwych trybów przeszukiwania sudoku
+Enumeracja mozliwych trybow przeszukiwania sudoku
 */
 enum NEXT_POINT_SEARCHING_SCENARIO {
     MOST_NEIGHBOURS = 1,
@@ -46,16 +46,16 @@ enum NEXT_POINT_SEARCHING_SCENARIO {
 
 #if DEBUG_MODE
 /*!
-W³¹czenie dodatkowych logów debugowych
+Wlaczenie dodatkowych logow debugowych
 */
 #define LOG(args, ...) printf(args, ##__VA_ARGS__)
 #else
 /*!
-Wy³¹czenie assercji
+Wylaczenie assercji
 */
 #define NDEBUG 1
 /*!
-Wy³¹czenie dodatkowych logów
+Wylaczenie dodatkowych logow
 */
 #define LOG(args, ...) (void)0
 #endif
