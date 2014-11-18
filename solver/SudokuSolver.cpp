@@ -167,16 +167,16 @@ inline bool SudokuSolver::checkCollision(int position, int value)
 
 void SudokuSolver::setCellValue(int position, int value)
 {
-    *m_cells[position].m_column = *m_cells[position].m_column | (1 << value);
-    *m_cells[position].m_row = *m_cells[position].m_row | (1 << value);
-    *m_cells[position].m_square = *m_cells[position].m_square | (1 << value);
+    *m_cells[position].m_column |= (1 << value);
+    *m_cells[position].m_row |= (1 << value);
+    *m_cells[position].m_square |= (1 << value);
 }
 
 void SudokuSolver::removeCellValue(int position, int value)
 {
-    *m_cells[position].m_column = *m_cells[position].m_column ^ (1 << value);
-    *m_cells[position].m_row = *m_cells[position].m_row ^ (1 << value);
-    *m_cells[position].m_square = *m_cells[position].m_square ^ (1 << value);
+    *m_cells[position].m_column ^= (1 << value);
+    *m_cells[position].m_row ^= (1 << value);
+    *m_cells[position].m_square ^= (1 << value);
 }
 
 
