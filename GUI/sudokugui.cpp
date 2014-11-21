@@ -39,7 +39,7 @@ void SudokuGUI::displayTime(long long time){
     ostringstream ss;
     ss << "";
     if(time != -1)
-        ss << time/1000000 << "s " << (time % 1000000)/1000 << "ms " << (time % 1000) << "us ";
+        ss << time/1000000000 << "s " << (time % 1000000000)/1000000 << "ms " << (time % 1000000) / 1000 << "us " << time % 1000 << "ns";
     m_ui.TimeField->setText(QString::fromStdString(ss.str()));
 }
 
@@ -221,8 +221,8 @@ void SudokuGUI::solve() {
     if(m_saveFlag){
         ostringstream ss;
         ss << "metoda " << m_solveMethod << " poziom trudnosci " << m_level << " liczba operacji " << solver.getSolveComplexity() << 
-            " czas " << solver.getSolveTime()/1000000 << "s " << (solver.getSolveTime() % 1000000)/1000 << 
-            "ms " << (solver.getSolveTime() % 1000) << "us ";
+            " czas " << /* solver.getSolveTime()/1000000 << "s " << (solver.getSolveTime() % 1000000)/1000 << 
+            "ms " << (solver.getSolveTime() % 1000) <<*/ solver.getSolveTime() << " ns";
         saveToFile(ss.str());
     }
 }

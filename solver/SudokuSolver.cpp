@@ -236,22 +236,34 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerati
     if(isSudokuAlreadySolved)
         return m_sudokuArray;
     auto startTime = std::chrono::steady_clock::now();
-    m_solveComplexity = 0;
+    int result;
     findAndSortEmptyCells(SCENARIO);
-    initializeValues();
-    
-    m_cellsNumber = m_cellsVector.size();
-    for (unsigned i = 0; i < m_cellsNumber; ++i)
-        m_cellsArray[i] = m_cellsVector[i].first;
 
-    int position = m_cellsArray[0];
-    m_cellsArray[0] = -1;
-    
-    int result = recursiveSearchInTree(position, isGenerating, 1);
+#define SCALING_VALUE 10
 
+    for (int k = 0; k < SCALING_VALUE; ++k)
+    {
+
+        for (int i = 0; i < 81; ++i)
+            m_sudokuTemporaryArray[i] = m_sudokuArray[i];
+        
+        m_solveComplexity = 0;
+        initializeValues();
+        m_cellsNumber = m_cellsVector.size();
+
+        for (unsigned i = 0; i < m_cellsNumber; ++i)
+            m_cellsArray[i] = m_cellsVector[i].first;
+
+        int position = m_cellsArray[0];
+        m_cellsArray[0] = -1;
+
+        result = recursiveSearchInTree(position, isGenerating, 1);
+        if(isGenerating)
+            break;
+    }
     auto endTime = std::chrono::steady_clock::now();
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    m_solveTime = elapsedTime.count();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
+    m_solveTime = elapsedTime.count() / SCALING_VALUE;
 
     if(result)
         return 0;
