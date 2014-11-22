@@ -16,9 +16,15 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
     unsigned attempt = 0;
     int chosenPosition;
     vector<int> positions;
+    vector<int> checkedPossibleValues;
+
     
     for (int i = 0; i < 81; ++i)
+    {
         positions.push_back(i);
+        sudokuArray[i] = 0;
+    }
+
     while(1)
     {
         ++attempt;
@@ -27,19 +33,27 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
 
         random_shuffle(positions.begin(), positions.end());
         bool possibleValues[9];
+        
+
         for (int i = 0; i < 9; ++i)
         {
             chosenPosition = positions[i];
             SudokuSolver::convert1Dto2D(chosenPosition, y, x);
             
             SudokuSolver::checkPossibleValues(y, x, sudokuArray, possibleValues);
-            
+            checkedPossibleValues.clear();
+            checkedPossibleValues.reserve(9);
+
             for(int j = 0; j < 9; ++j)
                 if(possibleValues[j])
-                {
-                    sudokuArray[chosenPosition] = j+1;
-                    break;
-                }
+                    checkedPossibleValues.push_back(j+1);
+
+            if(!checkedPossibleValues.size())
+                continue;
+
+            random_shuffle(checkedPossibleValues.begin(), checkedPossibleValues.end());
+            sudokuArray[chosenPosition] = checkedPossibleValues[0];
+
         }
         SudokuSolver sudoku(sudokuArray);
         int* tempResult = sudoku.solve(MOST_NEIGHBOURS, true);
