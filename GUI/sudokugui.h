@@ -75,7 +75,7 @@ class SudokuGUI : public QMainWindow
         void setHigherTimeResolutionFlag(bool flag);
     public:
         /*!
-        Konstruktor klasy SudokuGUI. Inicjuje zmienne i wiaze sygnaly i funkcje je odbierajace ze soba.
+        Konstruktor klasy SudokuGUI. Inicjuje zmienne oraz wiaze sygnaly i funkcje je odbierajace ze soba.
         */
         SudokuGUI(QWidget *parent = 0);
 
