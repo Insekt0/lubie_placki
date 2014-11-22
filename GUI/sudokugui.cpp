@@ -74,7 +74,7 @@ void SudokuGUI::updateStatusBar(STATUS_BAR_INFO status)
         break;
 
     case LONG_TIME:
-        result = "Uwaga! Rozwiazywanie Sudoku w tym trybie moze trwac bardzo dlugo!";
+        result = "Rozwiazywanie Sudoku w tym trybie moze trwac bardzo dlugo!";
         break;
 
     default:
