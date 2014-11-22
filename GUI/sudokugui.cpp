@@ -18,6 +18,7 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     QObject::connect(m_ui.RandomButtom, SIGNAL(clicked()),this,SLOT(randomSelected()));
     QObject::connect(m_ui.loadButton, SIGNAL(clicked(bool)),this,SLOT(loadSudokuButtonClicked()));
     QObject::connect(m_ui.saveToFileCheckbox, SIGNAL(toggled(bool)),this, SLOT(setSaveFlag(bool)));
+    QObject::connect(m_ui.higherTimeResCheckbox, SIGNAL(toggled(bool)),this, SLOT(setHigherTimeResolutionFlag(bool)));
     QObject::connect(m_ui.aboutAuthors, SIGNAL(triggered()), this, SLOT(aboutAuthorsClicked()));
     QObject::connect(m_ui.close, SIGNAL(triggered()), this, SLOT(close()));    
     displayOperations(-1);

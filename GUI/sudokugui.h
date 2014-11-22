@@ -67,7 +67,11 @@ class SudokuGUI : public QMainWindow
         @param flag - przyjmuje wartosc true, gdy uzytkownik wybierze tryb zapisu do pliku.
         */
         void setSaveFlag(bool flag) { m_saveFlag = flag; }
-
+        /*!
+        Funkcja odbierajaca sygnal wybrania opcji zwiekszenia rozdzielczosci czasowej wynikow.
+        @param flag - przyjmuje wartosc true, gdy uzytkownik wybierze dokladniejsze obliczanie wynikow czasowych.
+        */
+        void setHigherTimeResolutionFlag(bool flag){ m_higherTimeResolution=flag; }
     public:
         /*!
         Konstruktor klasy SudokuGUI. Inicjuje zmienne i wiaze sygnaly i funkcje je odbierajace ze soba.
@@ -138,6 +142,10 @@ class SudokuGUI : public QMainWindow
         Flaga informujaca, czy wyniki maja byc zapisywane do pliku.
         */
         bool m_saveFlag;
+        /*!
+        Flaga informujaca, czy maja byc wykonane dokladniejsze obliczenia czasow rozwiazania.
+        */
+        bool m_higherTimeResolution;
         /*!
         Flaga informujaca, czy wczytane Sudoku jest poprawne.
         */
