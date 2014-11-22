@@ -19,7 +19,8 @@ enum STATUS_BAR_INFO {
     EMPTY = 0,
     WRONG_SUDOKU_BOARD,
     SUDOKU_UNSOLVABLE,
-    NO_BOARD_LOADED
+    NO_BOARD_LOADED,
+    LONG_TIME
 };
 /*!
 Klasa okna glownego programu.
@@ -71,7 +72,7 @@ class SudokuGUI : public QMainWindow
         Funkcja odbierajaca sygnal wybrania opcji zwiekszenia rozdzielczosci czasowej wynikow.
         @param flag - przyjmuje wartosc true, gdy uzytkownik wybierze dokladniejsze obliczanie wynikow czasowych.
         */
-        void setHigherTimeResolutionFlag(bool flag){ m_higherTimeResolution=flag; }
+        void setHigherTimeResolutionFlag(bool flag);
     public:
         /*!
         Konstruktor klasy SudokuGUI. Inicjuje zmienne i wiaze sygnaly i funkcje je odbierajace ze soba.

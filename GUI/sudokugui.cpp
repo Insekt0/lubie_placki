@@ -4,7 +4,7 @@
 #include <QMessageBox>
 
 SudokuGUI::SudokuGUI(QWidget *parent)
-    : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0), m_canBeSolved(false)
+    : QMainWindow(parent), m_solveMethod(MOST_NEIGHBOURS), m_level(EXTREMELY_EASY), m_repetitionsCount(0), m_canBeSolved(false), m_higherTimeResolution(false)
 {
     QStringList levelsList=(QStringList()<<"Ekstremalnie \305\202atwy"<<"\305\201atwy"<<"\305\232redni"<<"Trudny"<<"Piekielnie trudny");
     m_ui.setupUi(this);
@@ -35,6 +35,14 @@ SudokuGUI::SudokuGUI(QWidget *parent)
     changeCellsValue(m_sudokuGeneratedArray);
 }
 
+void SudokuGUI::setHigherTimeResolutionFlag(bool flag)
+{
+    m_higherTimeResolution = flag;
+    if(flag)
+        updateStatusBar(LONG_TIME);
+    else
+        updateStatusBar(EMPTY);
+}
 
 void SudokuGUI::displayTime(long long time){
     ostringstream ss;
@@ -63,6 +71,10 @@ void SudokuGUI::updateStatusBar(STATUS_BAR_INFO status)
 
     case NO_BOARD_LOADED:
         result = "Zaladuj lub wygeneruj sudoku, ktore chcesz rozwiazac";
+        break;
+
+    case LONG_TIME:
+        result = "Uwaga! Rozwiazywanie Sudoku w tym trybie moze trwac bardzo dlugo!";
         break;
 
     default:
@@ -200,8 +212,8 @@ void SudokuGUI::solveButtonClicked() {
 
 void SudokuGUI::solve() {
     SudokuSolver solver(m_sudokuGeneratedArray);
-    int* result = solver.solve(m_solveMethod);
-
+ 
+    int* result = solver.solve(m_solveMethod, false, m_higherTimeResolution, m_level);
     if(!result)
     {
         updateStatusBar(SUDOKU_UNSOLVABLE);
@@ -222,8 +234,7 @@ void SudokuGUI::solve() {
     if(m_saveFlag){
         ostringstream ss;
         ss << "metoda " << m_solveMethod << " poziom trudnosci " << m_level << " liczba operacji " << solver.getSolveComplexity() << 
-            " czas " << /* solver.getSolveTime()/1000000 << "s " << (solver.getSolveTime() % 1000000)/1000 << 
-            "ms " << (solver.getSolveTime() % 1000) <<*/ solver.getSolveTime() << " ns";
+            " czas " << solver.getSolveTime() << " ns";
         saveToFile(ss.str());
     }
 }

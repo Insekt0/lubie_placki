@@ -37,8 +37,10 @@ public:
     Funkcja sluzaca do zarzadzania procesem rozwiazania Sudoku.
     @param SCENARIO - sposob rozwiazania
     @param isGenerating - flaga, mowiaca o tym, czy proces rozwiazywania jest wywolany do celow generacji sudoku.
+    @param higherTimeResolution - flaga informujaca o tym, czy powinny byc wykonane dokladne obliczenia czasu
+    @param sudokuLevel - poziom trudnosci Sudoku, na podstawie ktorego wyznaczymy liczbe powtorzen do wyznaczenia dokladnego czasu
     */
-    int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating = false);
+    int* solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating = false, bool higherTimeResolution = false, COMPLEXITY_LEVELS sudokuLevel = EXTREMELY_EASY);
     /*!
     Funkcja zwracajaca tablice, w ktorej znajduje sie informacja na temat mozliwych do wstawienia wartosci w dana komorke.
     @param itsY - pozycja komorki w osi Y

@@ -59,13 +59,9 @@ void SudokuGenerator::generate(int* sudokuArray, COMPLEXITY_LEVELS LEVEL) {
         int* tempResult = sudoku.solve(MOST_NEIGHBOURS, true);
         if(tempResult)
         { 
-#if DEBUG_MODE 
-            printSudoku(sudokuArray, "generated");
-#endif
             for(int i = 0; i < 81; ++i)
                 result[i] = tempResult[i];
 #if DEBUG_MODE            
-            printSudoku(result, "solved");
             unsigned timeInSec = unsigned(sudoku.getSolveTime()/1000000000);
             unsigned timeInMiliSec = (sudoku.getSolveTime() % 1000000000)/1000000;
             unsigned timeInMicroSec = (sudoku.getSolveTime() % 1000000) / 1000;

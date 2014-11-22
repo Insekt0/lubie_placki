@@ -232,16 +232,44 @@ int SudokuSolver::recursiveSearchInTree(int position, bool isGenerating, unsigne
     return -1; // dead end, solution is somewhere else
 }
 
-int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating) {
+int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerating, bool higherTimeResolution, COMPLEXITY_LEVELS sudokuLevel) {
     if(isSudokuAlreadySolved)
         return m_sudokuArray;
     auto startTime = std::chrono::steady_clock::now();
     int result;
     findAndSortEmptyCells(SCENARIO);
 
-#define SCALING_VALUE 10
+    unsigned howManyTimesSolving = 1; 
 
-    for (int k = 0; k < SCALING_VALUE; ++k)
+    if(higherTimeResolution)
+    {
+        switch(sudokuLevel)
+        {
+        case EXTREMELY_EASY:
+        case EASY:
+            howManyTimesSolving = 1000000;
+            break;
+        case MEDIUM:
+            if (SCENARIO == MOST_NEIGHBOURS)
+                howManyTimesSolving = 10000;
+            else 
+                howManyTimesSolving = 1000;
+            break;
+        case DIFFICULT:
+        case EVIL:
+            if (SCENARIO == MOST_NEIGHBOURS)
+                howManyTimesSolving = 1000;
+            else
+                howManyTimesSolving = 1;
+            break;
+        default:
+            assert(false);
+            break;
+        }
+    }
+
+
+    for (unsigned k = 0; k < howManyTimesSolving; ++k)
     {
 
         for (int i = 0; i < 81; ++i)
@@ -263,7 +291,7 @@ int* SudokuSolver::solve(NEXT_POINT_SEARCHING_SCENARIO SCENARIO, bool isGenerati
     }
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
-    m_solveTime = elapsedTime.count() / SCALING_VALUE;
+    m_solveTime = elapsedTime.count() / howManyTimesSolving;
 
     if(result)
         return 0;
