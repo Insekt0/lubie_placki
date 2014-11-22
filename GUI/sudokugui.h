@@ -97,10 +97,6 @@ class SudokuGUI : public QMainWindow
         */
         void displayOperations(long long operations);
         /*!
-        Zamiana tablicy z graficzna siatka Sudoku na tablice intow.
-        */
-        void changeGridToArray(int* table);
-        /*!
         Funkcja grupujaca komorki z graficznej siatki Sudoku w tablice.
         */
         void moveCellsIntoTable();

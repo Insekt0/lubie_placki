@@ -91,11 +91,6 @@ void SudokuGUI::updateStatusBar(STATUS_BAR_INFO status)
     m_ui.statusBar->setPalette(palette);
 }
 
-void SudokuGUI::changeGridToArray(int* table){
-    for(int i = 0; i < 81; ++i)
-        table[i] = m_cellsArray[i]->text().toInt();
-}
-
 void SudokuGUI::changeCellsValue(int* table, bool justAfterSolve){
     
     QFont fontNormal("Times", 15, QFont::Light, false);
